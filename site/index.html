@@ -485,6 +485,84 @@
 </footer>
 
 <script>
+  // os dois círculos deslizam SOBRE a linha tracejada conforme a rolagem
+  (function () {
+    var hero = document.querySelector('.hero');
+    var linha = document.querySelector('.deco__ring');
+    if (!hero || !linha) return;
+
+    if (window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var bolas = [
+      { el: document.querySelector('.orb--left'),  esquerda: true },
+      { el: document.querySelector('.orb--right'), esquerda: false }
+    ].filter(function (b) { return b.el; });
+
+    if (!bolas.length) return;
+
+    var pendente = false;
+
+    function posicionar() {
+      pendente = false;
+
+      // o curso é curto de propósito: como os círculos estão presos ao
+      // hero, eles saem por cima da tela conforme a rolagem avança. Se o
+      // trajeto durasse o hero inteiro, quase todo o movimento aconteceria
+      // já fora do campo de visão.
+      var curso = Math.max(1, window.innerHeight * 0.55);
+      var p = Math.min(1, Math.max(0, window.scrollY / curso));
+
+      var rh = hero.getBoundingClientRect();
+      var rl = linha.getBoundingClientRect();
+      // centro e raio da linha, em coordenadas do próprio hero
+      var cx = rl.left - rh.left + rl.width / 2;
+      var cy = rl.top - rh.top + rl.height / 2;
+      var raio = rl.width / 2;
+
+      var recuo = Math.min(82, Math.max(10, window.innerWidth * 0.05));
+
+      bolas.forEach(function (b) {
+        // no vertical os círculos somem: sem largura, nada a posicionar
+        var d = b.el.offsetWidth;
+        if (!d) return;
+
+        // O ângulo NÃO é fixo: ele sai da posição onde a bolinha deve
+        // começar. Com ângulo fixo, o raio da linha muda com a viewport e
+        // em telas médias a bolinha ia parar fora da tela.
+        var xInicial = b.esquerda
+          ? recuo + d / 2
+          : window.innerWidth - recuo - d / 2;
+
+        var cos = Math.max(-1, Math.min(1, (xInicial - cx) / raio));
+        // o arco de cima é o de seno negativo, daí o 2π menos o acos
+        var inicio = 2 * Math.PI - Math.acos(cos);
+
+        // percorrer 16° no sentido crescente sobe a da esquerda e desce a
+        // da direita — os dois lados do arco correm em sentidos opostos
+        var ang = inicio + (16 * Math.PI / 180) * p;
+
+        var x = cx + raio * Math.cos(ang);
+        var y = cy + raio * Math.sin(ang);
+
+        b.el.style.left = (x - d / 2) + 'px';
+        b.el.style.top = (y - b.el.offsetHeight / 2) + 'px';
+        b.el.style.right = 'auto';
+        b.el.style.bottom = 'auto';
+      });
+    }
+
+    function agendar() {
+      if (pendente) return;
+      pendente = true;
+      requestAnimationFrame(posicionar);
+    }
+
+    posicionar();
+    window.addEventListener('scroll', agendar, { passive: true });
+    window.addEventListener('resize', agendar);
+  })();
+
   // entrada por rolagem — vale pra faixa da equipe e pros blocos [data-reveal]
   (function () {
     var semMovimento = window.matchMedia &&

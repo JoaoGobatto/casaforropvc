@@ -92,9 +92,8 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-/* o hero deixou de recortar o conteúdo pro recorte da equipe poder vazar
-   pra faixa de baixo — a trava contra rolagem lateral sobe pro elemento
-   raiz, que é de onde o overflow propaga pra viewport */
+/* rede de segurança contra rolagem lateral: o recorte de cada bloco já
+   resolve, mas aqui garante que nenhum elemento decorativo novo escape */
 html {
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
@@ -144,9 +143,12 @@ a { color: inherit; text-decoration: none; }
 .hero {
   position: relative;
   isolation: isolate;
-  /* a faixa escura pinta POR CIMA do recorte: é ela que corta a imagem,
-     do mesmo jeito que corta o telhado na referência */
   z-index: 0;
+  /* voltou a recortar: desde que a faixa preta saiu, o recorte da equipe
+     não precisa mais vazar pra fora do hero. E agora faz falta — as
+     bolinhas correm pelo arco e passariam da borda direita, ampliando a
+     área rolável da página. */
+  overflow: hidden;
   /* a primeira tela e o conteudo cabem em 100svh; a faixa da equipe
      comeca exatamente na dobra, entao so aparece depois da rolagem */
   /* o +24px e folga: sem ele a faixa para a 3px da dobra no mobile, e
@@ -159,8 +161,6 @@ a { color: inherit; text-decoration: none; }
 
 /* --- fundo decorativo ---------------------------------------------------- */
 
-/* recorta os dois círculos aqui dentro, já que o .hero precisa deixar
-   o recorte da equipe passar pra fora */
 .deco {
   position: absolute;
   inset: 0;

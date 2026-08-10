@@ -1,30 +1,32 @@
 /* ==========================================================================
    Casa do Forro PVC — Seção 1 (hero)
-   Estrutura copiada da referência; paleta e tipografia da marca.
+   Layout copiado da referência Fixbild; paleta da marca.
+   Mapa de cores: o vermelho da referência vira o azul vivo da marca,
+   o preto continua preto (está na paleta), o dourado fica nos detalhes.
    ========================================================================== */
 
 :root {
-  /* --- cores da marca --- */
-  --navy-950: #060D22;   /* fundo mais profundo */
-  --navy-900: #0A1330;   /* fundo do hero */
-  --navy-700: #172D68;   /* azul institucional */
-  --blue-500: #2455A4;   /* azul vivo — marca gráfica gigante */
-  --gold:     #D99E24;   /* dourado — destaques e CTA */
-  --wood:     #83572A;   /* marrom madeira — apoio */
-  --ink:      #111111;
+  /* --- marca --- */
+  --ink:      #111111;   /* texto forte e botões */
+  --navy:     #172D68;   /* azul institucional */
+  --accent:   #2455A4;   /* azul vivo — ocupa o lugar do vermelho */
+  --gold:     #D99E24;   /* dourado — detalhes */
   --white:    #FFFFFF;
 
-  /* neutros puxados pro azul da marca, não cinza puro */
-  --mist:     rgba(233, 238, 250, 0.72);
-  --hair:     rgba(226, 234, 252, 0.22);
-  --hair-str: rgba(226, 234, 252, 0.40);
+  /* neutros com viés azul, não cinza puro */
+  --bg:       #F3F4F6;
+  --muted:    #6B6F7B;
+  --line:     #E4E5EA;
+  --chip:     #F1F1F4;
+  --dash:     #D9DAE1;
 
   /* --- métrica --- */
-  --gutter: clamp(20px, 3.6vw, 54px);
-  --radius: 14px;
+  --gutter: clamp(16px, 3vw, 40px);
+  --bar-h: 74px;
 
-  /* trocar por outro arquivo é só mudar aqui */
-  --photo: url('../img/equipe.jpg');
+  /* slots de imagem dos dois círculos decorativos */
+  --orb-left:  none;
+  --orb-right: none;
 }
 
 *,
@@ -35,26 +37,25 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--navy-950);
-  color: var(--white);
+  background: var(--bg);
+  color: var(--ink);
   font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
 }
 
-body.nav-locked { overflow: hidden; }
+body.menu-locked { overflow: hidden; }
 
 a { color: inherit; text-decoration: none; }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 /* ==========================================================================
-   HERO — grade geral
-   linha 1 header · linha 2 título · linha 3 cards + botão de scroll
+   HERO
    ========================================================================== */
 
 .hero {
@@ -62,517 +63,434 @@ a { color: inherit; text-decoration: none; }
   isolation: isolate;
   overflow: hidden;
   min-height: 100svh;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  padding: clamp(22px, 2.6vh, 34px) var(--gutter) clamp(26px, 3.4vh, 40px);
-  gap: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
 }
 
-/* --- camada 1: foto ------------------------------------------------------ */
+/* --- fundo decorativo ---------------------------------------------------- */
 
-.hero__media {
+.deco {
   position: absolute;
   inset: 0;
   z-index: 0;
-  overflow: hidden;
+  pointer-events: none;
 }
 
-.hero__photo {
+/* círculo claro atrás do conteúdo */
+.deco__glow {
   position: absolute;
-  inset: 0;
-  /* a segunda camada é o fallback: se a foto ainda não estiver em
-     img/equipe.jpg, o gradiente continua pintando o fundo */
-  background-image: var(--photo),
-    radial-gradient(120% 90% at 62% 46%, #23407e 0%, #12224d 46%, var(--navy-950) 100%);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center 42%;
-
-  /* abertura: fecha no rosto do centro e abre revelando a equipe */
-  transform-origin: 50% 38%;
-  will-change: transform;
-  animation: heroReveal 7s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  left: 50%;
+  top: 8%;
+  width: min(1180px, 128vw);
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side,
+    var(--white) 0%,
+    var(--white) 76%,
+    rgba(255, 255, 255, 0) 100%);
 }
 
-@keyframes heroReveal {
-  from { transform: scale(2.2); }
-  to   { transform: scale(1); }
-}
-
-/* --- camada 2: escurecimento --------------------------------------------- */
-
-.hero__scrim {
+/* círculo tracejado, maior, sangrando nas laterais */
+.deco__ring {
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    linear-gradient(100deg,
-      rgba(6, 13, 34, 0.94) 0%,
-      rgba(6, 13, 34, 0.86) 26%,
-      rgba(8, 17, 42, 0.52) 58%,
-      rgba(8, 17, 42, 0.62) 100%),
-    linear-gradient(to bottom,
-      rgba(6, 13, 34, 0.80) 0%,
-      rgba(6, 13, 34, 0.10) 26%,
-      rgba(6, 13, 34, 0.20) 62%,
-      rgba(6, 13, 34, 0.78) 100%);
-}
-
-/* --- camada 3: marca gráfica gigante ------------------------------------- */
-
-/* dimensionada pela ALTURA — assim ela não estoura em telas largas e
-   mantém a proporção da referência (ocupa ~metade da altura do hero) */
-.hero__mark {
-  position: absolute;
-  z-index: 2;
-  right: -3vw;
-  top: 58%;
-  height: min(54vh, 470px);
-  transform: translateY(-50%);
-  animation: markIn 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) 0.25s both;
-}
-
-.hero__mark svg {
-  display: block;
-  height: 100%;
-  width: auto;
-}
-
-.mark__house {
-  fill: var(--blue-500);
-  opacity: 0.92;
-}
-
-.mark__forro {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 2.6;
-  stroke-linecap: square;
-}
-
-@keyframes markIn {
-  from { opacity: 0; transform: translateY(-50%) translateX(7%) scale(1.05); }
-  to   { opacity: 1; transform: translateY(-50%) translateX(0) scale(1); }
+  left: 50%;
+  top: 4%;
+  width: min(1420px, 152vw);
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border: 1px dashed var(--dash);
+  border-radius: 50%;
 }
 
 /* ==========================================================================
-   HEADER
+   BARRA FLUTUANTE
    ========================================================================== */
 
-.hd {
+.bar {
   position: relative;
-  z-index: 5;
-  grid-column: 1 / -1;
-  grid-row: 1;
-  animation: rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s both;
+  z-index: 6;
+  padding: clamp(12px, 1.5vw, 22px) var(--gutter) 0;
 }
 
-.hd__top {
+.bar__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 18px;
+  min-height: var(--bar-h);
+  max-width: 1560px;
+  margin-inline: auto;
+  padding: 0 14px 0 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 2px 14px rgba(17, 17, 17, 0.03);
 }
 
 /* --- logo --- */
 
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 11px;
-}
-
-.brand__mark {
-  width: 30px;
-  flex: none;
-}
-
-.brand__mark svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  fill: var(--white);
-}
-
-.brand__mark .brand__line {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 7;
-}
-
-.brand__type {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-  gap: 3px;
-}
-
-.brand__l1 {
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.055em;
-}
-
-.brand__l1 em {
-  font-style: normal;
-  font-weight: 400;
-  opacity: 0.75;
-}
-
-.brand__l2 {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.42em;
-  color: var(--gold);
-}
-
-/* --- ações do topo --- */
-
-.hd__actions {
-  display: flex;
-  align-items: center;
-  gap: clamp(12px, 1.4vw, 22px);
-}
-
-.hd__phone {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-  transition: color 0.25s ease;
-}
-
-.hd__phone:hover { color: var(--gold); }
-
-.pill {
+.logo {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 16px;
-  border: 1px solid var(--hair-str);
-  border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 600;
-  white-space: nowrap;
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(6px);
-  transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
-}
-
-.pill:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-  background: rgba(217, 158, 36, 0.10);
-}
-
-.pill__chev {
-  width: 10px;
-  height: auto;
   flex: none;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
-.hd__ig {
-  display: inline-grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--hair-str);
-  border-radius: 50%;
-  transition: border-color 0.25s ease, color 0.25s ease;
+.logo__mark {
+  width: 28px;
+  flex: none;
 }
 
-.hd__ig:hover { border-color: var(--gold); color: var(--gold); }
-
-.hd__ig svg {
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-}
-
-.hd__ig .dot {
-  fill: currentColor;
-  stroke: none;
-}
-
-.hd__burger {
-  display: none;
-  width: 38px;
-  height: 34px;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-}
-
-.hd__burger span {
+.logo__mark svg {
   display: block;
-  height: 1.5px;
   width: 100%;
-  background: var(--white);
-  transition: transform 0.3s ease, opacity 0.2s ease;
+  height: auto;
+  fill: var(--navy);
 }
 
-.hd__burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-.hd__burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-.hd__burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.logo__mark .logo__line {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 8;
+}
 
-/* --- navegação com os fios finos --- */
+.logo__type {
+  font-size: clamp(17px, 1.35vw, 20px);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
 
-.nav {
+/* --- menu --- */
+
+.menu {
   display: flex;
-  align-items: flex-start;
-  margin-top: clamp(18px, 2.4vh, 30px);
+  align-items: center;
+  gap: clamp(6px, 1vw, 14px);
 }
 
-.nav__item {
+.menu__item {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: 13.5px;
-  font-weight: 500;
+  gap: 6px;
+  padding: 9px 15px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
   white-space: nowrap;
-  padding-block: 4px;
-  transition: color 0.25s ease;
+  color: var(--muted);
+  transition: color 0.22s ease, background-color 0.22s ease;
 }
 
-.nav__item:hover { color: var(--gold); }
+.menu__item:hover { color: var(--ink); }
 
-.nav__chev {
-  width: 9px;
+.menu__item.is-active {
+  background: var(--chip);
+  color: var(--ink);
+}
+
+.menu__caret {
+  width: 7px;
   height: auto;
   flex: none;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.7;
+  fill: currentColor;
 }
 
-.nav__rule {
-  flex: 1 1 auto;
-  height: 1px;
-  min-width: 18px;
-  margin: 5px clamp(14px, 2.1vw, 30px) 0;
-  background: var(--hair);
+/* --- lado direito --- */
+
+.bar__right {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.2vw, 18px);
+  flex: none;
 }
 
-.nav__rule--wide { flex-grow: 2.6; }
-
-/* ==========================================================================
-   TÍTULO
-   ========================================================================== */
-
-.hero__copy {
+.cart {
   position: relative;
-  z-index: 4;
-  grid-column: 1 / -1;
-  grid-row: 2;
-  align-self: center;
-  /* sobe o bloco acima do centro óptico, como na referência */
-  margin-bottom: clamp(16px, 11vh, 150px);
-}
-
-.ttl {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  /* o piso em vw é alto de propósito: como as linhas não quebram,
-     é o tamanho da fonte que precisa caber na tela estreita */
-  font-size: clamp(1.9rem, 8.6vw, 5.4rem);
-  line-height: 1.03;
-  letter-spacing: -0.028em;
-}
-
-/* as duas linhas são quebras de composição, não de fluxo —
-   o tamanho da fonte é que controla a largura do bloco */
-.ttl__l1,
-.ttl__l2 { white-space: nowrap; }
-
-.ttl__l1 {
-  font-weight: 800;
-  animation: rise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.45s both;
-}
-
-.ttl__l2 {
-  font-weight: 300;
-  animation: rise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.60s both;
-}
-
-.sub {
-  margin: clamp(18px, 2.4vh, 30px) 0 0;
-  font-size: clamp(0.95rem, 1.05vw, 1.06rem);
-  font-weight: 600;
-  line-height: 1.5;
-  max-width: 38ch;
-  color: rgba(255, 255, 255, 0.94);
-  animation: rise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.78s both;
-}
-
-/* ==========================================================================
-   CARDS
-   ========================================================================== */
-
-.cards {
-  position: relative;
-  z-index: 4;
-  grid-column: 1;
-  grid-row: 3;
-  align-self: end;
-  justify-self: start;
-  display: flex;
-  gap: 16px;
-}
-
-.card {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  width: clamp(186px, 16.5vw, 232px);
-  min-height: 130px;
-  padding: 15px 16px 0;
-  border-radius: var(--radius);
-  background: var(--white);
-  color: var(--navy-700);
-  box-shadow: 0 18px 44px rgba(3, 8, 24, 0.34);
-  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
-              box-shadow 0.35s ease;
-  animation: rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-.cards .card:nth-child(1) { animation-delay: 0.95s; }
-.cards .card:nth-child(2) { animation-delay: 1.06s; }
-
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 26px 56px rgba(3, 8, 24, 0.44);
-}
-
-.card__head {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.card__name {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.005em;
-}
-
-.card__num {
-  font-size: 11.5px;
-  font-weight: 500;
-  color: rgba(23, 45, 104, 0.48);
-  font-variant-numeric: tabular-nums;
-}
-
-/* faixa de imagem colada na base do card.
-   enquanto não há foto real, o padrão de ripas segura o lugar */
-.card__thumb {
-  margin: auto -16px 0;
-  height: 52px;
-}
-
-.card__thumb--forro {
-  background:
-    repeating-linear-gradient(90deg,
-      rgba(23, 45, 104, 0.14) 0 1px,
-      transparent 1px 13px),
-    linear-gradient(170deg, #F2F5FB 0%, #D7DEEC 100%);
-}
-
-.card__thumb--acab {
-  background:
-    repeating-linear-gradient(90deg,
-      rgba(255, 255, 255, 0.16) 0 1px,
-      transparent 1px 15px),
-    linear-gradient(170deg, #A67437 0%, var(--wood) 100%);
-}
-
-.card__go {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  display: grid;
+  display: inline-grid;
   place-items: center;
   width: 30px;
   height: 30px;
-  border-radius: 50%;
-  background: var(--navy-700);
-  transition: background-color 0.25s ease, transform 0.25s ease;
+  color: var(--ink);
+  transition: color 0.22s ease;
 }
 
-.card:hover .card__go {
-  background: var(--gold);
-  transform: rotate(45deg);
-}
+.cart:hover { color: var(--accent); }
 
-.card__go svg {
-  width: 13px;
-  height: 13px;
+.cart svg {
+  width: 21px;
+  height: 21px;
   fill: none;
-  stroke: var(--white);
+  stroke: currentColor;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-/* ==========================================================================
-   BOTÃO DE SCROLL
-   ========================================================================== */
-
-.scroll {
-  position: relative;
-  z-index: 4;
-  grid-column: 2;
-  grid-row: 3;
-  align-self: end;
-  justify-self: end;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--hair-str);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(6px);
-  transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
-  animation: rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 1.2s both;
+.cart__badge {
+  position: absolute;
+  top: -1px;
+  right: -3px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 9.5px;
+  font-weight: 800;
+  line-height: 15px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
-.scroll:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-  background: rgba(217, 158, 36, 0.12);
+/* --- botão preto --- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
-.scroll svg {
-  width: 13px;
+.btn--dark {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.btn--dark:hover { background: var(--navy); }
+
+.btn__arrow {
+  width: 16px;
   height: auto;
+  flex: none;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
-  animation: bob 2.4s ease-in-out 2s infinite;
+  transition: transform 0.25s ease;
 }
 
-@keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(3px); }
+.btn:hover .btn__arrow { transform: translateX(3px); }
+
+/* --- burger (só no mobile) --- */
+
+.burger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--chip);
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.burger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--ink);
+  transition: transform 0.28s ease, opacity 0.2s ease;
+}
+
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* ==========================================================================
+   CONTEÚDO CENTRAL
+   ========================================================================== */
+
+.hero__inner {
+  position: relative;
+  z-index: 4;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 2.6vh, 30px);
+  text-align: center;
+  padding: clamp(34px, 6vh, 76px) var(--gutter) clamp(50px, 10vh, 120px);
+}
+
+/* --- selo --- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 18px 0 5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink);
+  animation: rise 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.05s both;
+}
+
+.badge__icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.badge__icon svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--white);
+}
+
+/* --- headline --- */
+
+.ttl {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: 'Anton', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.55rem, 6.6vw, 6.1rem);
+  /* Anton tem descida curta, mas o Ç do português precisa de folga —
+     com line-height 1 a cedilha encosta na linha de cima */
+  line-height: 1.13;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.ttl__line { white-space: nowrap; }
+.ttl__line:nth-child(1) { animation: rise 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.14s both; }
+.ttl__line:nth-child(2) { animation: rise 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.22s both; }
+
+.ttl em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* --- linha de apoio --- */
+
+.lead {
+  max-width: 52ch;
+  margin: 0;
+  font-size: clamp(0.9rem, 1.05vw, 1rem);
+  font-weight: 500;
+  line-height: 1.68;
+  color: var(--muted);
+  text-wrap: pretty;
+  animation: rise 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s both;
+}
+
+/* --- telefone + botão --- */
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(16px, 2.4vw, 34px);
+  margin-top: clamp(4px, 1.2vh, 14px);
+  animation: rise 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.38s both;
+}
+
+.tel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition: color 0.22s ease;
+}
+
+.tel:hover { color: var(--accent); }
+
+.tel__icon {
+  width: 19px;
+  height: 19px;
+  flex: none;
+  fill: var(--accent);
+}
+
+/* ==========================================================================
+   CÍRCULOS DECORATIVOS
+   ========================================================================== */
+
+.orb {
+  position: absolute;
+  z-index: 3;
+  margin: 0;
+  width: clamp(72px, 6.6vw, 100px);
+  aspect-ratio: 1;
+  padding: 4px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  animation: pop 0.7s cubic-bezier(0.34, 1.4, 0.5, 1) 0.5s both;
+}
+
+.orb__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+/* enquanto não há foto, o padrão de ripas segura o lugar */
+.orb--left {
+  left: clamp(10px, 5vw, 82px);
+  top: 42%;
+  border-color: var(--accent);
+}
+
+.orb--left .orb__img {
+  background-image: var(--orb-left),
+    repeating-linear-gradient(122deg,
+      rgba(255, 255, 255, 0.22) 0 1px,
+      transparent 1px 9px),
+    linear-gradient(150deg, #2E62B4 0%, var(--navy) 100%);
+}
+
+.orb--right {
+  right: clamp(10px, 5vw, 82px);
+  bottom: clamp(40px, 9vh, 96px);
+  border-color: var(--gold);
+}
+
+.orb--right .orb__img {
+  background-image: var(--orb-right),
+    repeating-linear-gradient(122deg,
+      rgba(17, 17, 17, 0.10) 0 1px,
+      transparent 1px 9px),
+    linear-gradient(150deg, #E9EAEE 0%, #BFC2CC 100%);
 }
 
 /* ==========================================================================
@@ -580,87 +498,99 @@ a { color: inherit; text-decoration: none; }
    ========================================================================== */
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 /* ==========================================================================
    RESPONSIVO
    ========================================================================== */
 
-@media (max-width: 1080px) {
-  .hero__mark { height: min(44vh, 380px); right: -8vw; }
+@media (max-width: 1180px) {
+  .menu__item { padding-inline: 11px; letter-spacing: 0.05em; }
+  .btn { padding-inline: 20px; }
 }
 
-@media (max-width: 900px) {
-  .hd__phone,
-  .pill,
-  .hd__ig { display: none; }
+@media (max-width: 1000px) {
+  :root { --bar-h: 66px; }
 
-  .hd__burger { display: flex; }
+  .burger { display: flex; }
 
-  .nav {
+  .bar__inner {
+    position: relative;
+    flex-wrap: wrap;
+    padding-inline: 14px 12px;
+  }
+
+  /* o menu vira painel dentro da própria barra */
+  .menu {
     display: none;
+    order: 3;
+    flex-basis: 100%;
     flex-direction: column;
     align-items: stretch;
     gap: 2px;
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px solid var(--hair);
+    padding: 6px 0 14px;
+    border-top: 1px solid var(--line);
   }
 
-  .nav.is-open { display: flex; }
+  .menu.is-open { display: flex; }
 
-  .nav__item {
-    font-size: 17px;
-    font-weight: 600;
-    padding-block: 11px;
+  .menu__item {
+    justify-content: flex-start;
+    padding: 13px 12px;
+    font-size: 13px;
+    border-radius: 10px;
   }
 
-  .nav__rule {
-    flex: none;
-    width: 100%;
-    margin: 0;
-  }
+  .bar__right .btn { display: none; }
 
-  /* no vertical a marca desce pro canto e perde peso — senão
-     ela briga com o título em vez de emoldurar */
-  .hero__mark {
-    height: min(34vh, 290px);
-    right: -22vw;
-    top: 66%;
-    opacity: 0.55;
-  }
-
-  .hero__copy { margin-bottom: clamp(8px, 3vh, 30px); }
-
-  .sub br { display: none; }
+  .orb { width: clamp(60px, 9vw, 84px); }
+  .orb--left { top: 36%; }
 }
 
 @media (max-width: 640px) {
-  .hero { grid-template-columns: minmax(0, 1fr); }
+  .hero__inner {
+    justify-content: flex-start;
+    padding-top: clamp(40px, 9vh, 84px);
+    gap: 18px;
+  }
 
-  .scroll { display: none; }
+  .badge {
+    height: 34px;
+    padding-right: 14px;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+  }
 
-  .cards {
-    grid-column: 1;
+  .badge__icon { width: 26px; height: 26px; }
+
+  .ttl { font-size: clamp(1.9rem, 9.4vw, 3.2rem); }
+
+  .lead { font-size: 0.9rem; line-height: 1.6; }
+
+  .actions {
+    flex-direction: column;
+    gap: 16px;
     width: 100%;
-    gap: 10px;
   }
 
-  .card {
-    flex: 1 1 0;
-    width: auto;
-    min-height: 116px;
-    padding: 13px 13px 0;
+  .actions .btn {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
   }
 
-  .card__thumb {
-    margin-inline: -13px;
-    height: 42px;
-  }
+  .orb--left  { left: -18px;  top: auto; bottom: 30%; }
+  .orb--right { right: -18px; bottom: 16%; }
 
-  .ttl { letter-spacing: -0.02em; }
+  .deco__glow { top: 4%; width: 170vw; }
+  .deco__ring { top: 2%; width: 196vw; }
 }
 
 /* ==========================================================================
@@ -668,29 +598,21 @@ a { color: inherit; text-decoration: none; }
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__photo {
-    animation: none;
-    transform: scale(1);
-  }
-
-  .hero__mark {
-    animation: none;
-    opacity: 1;
-    transform: translateY(-50%);
-  }
-
-  .hd,
-  .ttl__l1,
-  .ttl__l2,
-  .sub,
-  .card,
-  .scroll {
+  .badge,
+  .ttl__line,
+  .lead,
+  .actions,
+  .orb {
     animation: none;
     opacity: 1;
     transform: none;
   }
 
-  .scroll svg { animation: none; }
+  .btn,
+  .btn__arrow,
+  .cart,
+  .menu__item,
+  .tel { transition: none; }
 
-  .card:hover { transform: none; }
+  .btn:hover .btn__arrow { transform: none; }
 }

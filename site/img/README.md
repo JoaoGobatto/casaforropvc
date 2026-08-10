@@ -122,6 +122,31 @@ luz**. Enquadramento com o teto ocupando boa parte do quadro, linhas
 retas, sem contraluz de janela estourando. Foto de celular resolve, desde
 que o ambiente esteja limpo e iluminado.
 
+## `cta.jpg` — a peça da chamada final
+
+O bloco antes do rodapé não é um quadro de foto: é uma **peça cortada na
+diagonal**, no espírito da telha da referência. O corte é feito por
+`clip-path`, então a foto que entrar ali vai ser recortada no mesmo
+ângulo — não precisa vir cortada.
+
+Enquanto não existe, o lugar é preenchido por uma madeira desenhada em
+CSS, com as réguas convergindo em perspectiva (é a convergência que faz
+ler como teto e não como piso).
+
+- Enquadramento: **teto amadeirado visto de baixo**, com as réguas
+  correndo na diagonal — a foto que você mandou no chat é exatamente isso
+- Tamanho: **1600 × 1100** basta
+- JPG qualidade 78-82, abaixo de 500 KB
+
+### Como ligar
+
+1. Em `css/style.css`, na regra `.cta`, trocar o `none`:
+   ```css
+   .cta { --cta-foto: url('../img/cta.jpg'); }
+   ```
+2. Em `index.html`, tirar a classe `cta--vazia` do `<section class="cta">`
+   (é ela que mostra a madeira de CSS e o rótulo).
+
 ## Outras imagens pendentes
 
 - **Círculos decorativos** — os dois `.orb` (esquerda e direita) estão com

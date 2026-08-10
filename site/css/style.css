@@ -1220,21 +1220,70 @@ a { color: inherit; text-decoration: none; }
    dentro do mesmo título, sem mudar corpo nem peso */
 .cta__titulo--fraco { color: #C3C7D0; }
 
+/* --- a peça de forro ------------------------------------------------------
+   Não é um quadrado de foto: é um pedaço cortado na diagonal, como a
+   telha da referência. O clip-path faz o corte; o ::before é o
+   placeholder de madeira, com perspectiva de verdade pra as réguas
+   convergirem em vez de ficarem paralelas.
+   -------------------------------------------------------------------- */
+
 .cta__foto {
+  position: relative;
   display: grid;
   place-items: center;
+  overflow: hidden;
   min-height: clamp(230px, 32vh, 380px);
-  background-image: var(--cta-foto),
-    repeating-linear-gradient(115deg,
-      rgba(255, 255, 255, 0.5) 0 1px,
-      transparent 1px 15px),
-    linear-gradient(150deg, #DFE4EE 0%, #C4CCDB 100%);
+
+  /* o canto de cima à esquerda entra: a peça parece cortada em ângulo */
+  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+
+  background-image: var(--cta-foto);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 
+/* madeira desenhada em CSS — some assim que a foto real entrar */
+.cta__foto::before {
+  content: "";
+  display: none;
+  position: absolute;
+  inset: -30%;
+  background:
+    /* junta entre as réguas */
+    repeating-linear-gradient(101deg,
+      rgba(58, 32, 12, 0.55) 0 2px,
+      transparent 2px 3px,
+      transparent 3px 26px),
+    /* variação de tom de régua pra régua */
+    repeating-linear-gradient(101deg,
+      #9A6733 0 26px,
+      #83572A 26px 52px,
+      #A8743B 52px 78px,
+      #74491F 78px 104px),
+    linear-gradient(160deg, #B07C3E 0%, #6E4622 100%);
+  /* as réguas convergem: é o que dá a leitura de teto, não de piso */
+  transform: perspective(900px) rotateY(-15deg) rotateX(5deg) scale(1.25);
+}
+
+.cta--vazia .cta__foto::before { display: block; }
+
+/* brilho seguindo o corte, pra sugerir a espessura da peça */
+.cta__foto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(101deg,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.06) 14%,
+    transparent 38%),
+    linear-gradient(to top, rgba(30, 16, 6, 0.34) 0%, transparent 42%);
+  pointer-events: none;
+}
+
 .cta__vazio {
+  position: relative;
+  z-index: 2;
   padding: 9px 18px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.82);
@@ -1248,7 +1297,12 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 900px) {
   .cta { grid-template-columns: minmax(0, 1fr); }
   .cta__texto { padding-inline: var(--gutter); }
-  .cta__foto { min-height: clamp(200px, 30vh, 280px); }
+
+  .cta__foto {
+    min-height: clamp(200px, 30vh, 280px);
+    /* deitado, o corte vira uma aba no topo em vez de comer a lateral */
+    clip-path: polygon(0% 12%, 100% 0%, 100% 100%, 0% 100%);
+  }
 }
 
 /* ==========================================================================

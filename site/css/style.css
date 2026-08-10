@@ -915,6 +915,267 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ==========================================================================
+   SEÇÃO 4 — DEPOIMENTOS
+   Painel escuro em azul institucional. Quebra o ritmo claro das três
+   primeiras seções e devolve o dourado, que até aqui só aparecia em
+   detalhes minúsculos.
+   ========================================================================== */
+
+.depos {
+  padding: 0 var(--gutter) clamp(70px, 11vh, 140px);
+  background: var(--bg);
+}
+
+.depos__painel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: clamp(44px, 6.5vh, 88px) clamp(22px, 3.4vw, 62px)
+           clamp(48px, 7vh, 92px);
+  border-radius: clamp(18px, 1.8vw, 28px);
+  background: linear-gradient(158deg,
+    #1D3576 0%,
+    #101F49 52%,
+    #0A1330 100%);
+}
+
+/* brilho ambiente atrás dos cartões */
+.depos__brilho {
+  position: absolute;
+  inset: -30% -10% auto;
+  z-index: -1;
+  height: 120%;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 46% at 18% 8%, rgba(217, 158, 36, 0.22) 0%, transparent 70%),
+    radial-gradient(42% 50% at 86% 22%, rgba(36, 85, 164, 0.55) 0%, transparent 72%);
+}
+
+.depos__cabeca {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: clamp(30px, 4.4vh, 54px);
+}
+
+.badge--centro { margin-inline: auto; }
+
+.depos__titulo {
+  margin: clamp(14px, 2vh, 22px) 0 0;
+  font-family: 'Anton', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3.2vw, 3rem);
+  line-height: 1.06;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-wrap: balance;
+}
+
+.depos__sub {
+  max-width: 54ch;
+  margin: clamp(10px, 1.4vh, 16px) 0 0;
+  font-size: clamp(0.86rem, 0.96vw, 0.95rem);
+  font-weight: 500;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.62);
+  text-wrap: pretty;
+}
+
+.depos__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 26px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* --- o cartão --- */
+
+.depo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 2.4vw, 38px) clamp(20px, 2vw, 32px)
+           clamp(22px, 2.2vw, 32px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(2px);
+}
+
+/* mesma armadilha da seção 2: revelação e hover precisam dividir a MESMA
+   declaração de transition, senão uma zera as propriedades da outra */
+.depo[data-reveal] {
+  transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+              background-color 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
+}
+
+.depo:nth-child(1) { transition-delay: 0.06s; }
+.depo:nth-child(2) { transition-delay: 0.16s; }
+.depo:nth-child(3) { transition-delay: 0.26s; }
+
+.depo__aspas {
+  position: absolute;
+  top: clamp(4px, 0.8vw, 12px);
+  right: clamp(14px, 1.6vw, 26px);
+  font-family: 'Anton', Georgia, serif;
+  font-size: clamp(3.4rem, 5vw, 5.4rem);
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.09);
+  transition: color 0.4s ease;
+}
+
+/* --- estrelas --- */
+
+.depo__estrelas {
+  display: flex;
+  gap: 4px;
+  margin-bottom: clamp(14px, 1.8vh, 20px);
+}
+
+.estrela {
+  width: 15px;
+  height: 15px;
+  background: var(--gold);
+  /* estrela de 5 pontas em clip-path — sem fonte de ícone, sem SVG */
+  clip-path: polygon(50% 0%, 61.8% 35.5%, 100% 35.5%, 69% 57.5%,
+                     80.9% 93%, 50% 71%, 19.1% 93%, 31% 57.5%,
+                     0% 35.5%, 38.2% 35.5%);
+  opacity: 0.25;
+  transform: scale(0.8);
+}
+
+/* acendem uma a uma quando o cartão entra */
+.depo.is-in .estrela {
+  animation: acende 0.42s cubic-bezier(0.34, 1.5, 0.5, 1) forwards;
+}
+
+.depo.is-in .estrela:nth-child(1) { animation-delay: 0.30s; }
+.depo.is-in .estrela:nth-child(2) { animation-delay: 0.38s; }
+.depo.is-in .estrela:nth-child(3) { animation-delay: 0.46s; }
+.depo.is-in .estrela:nth-child(4) { animation-delay: 0.54s; }
+.depo.is-in .estrela:nth-child(5) { animation-delay: 0.62s; }
+
+@keyframes acende {
+  from { opacity: 0.25; transform: scale(0.8); }
+  60%  { transform: scale(1.18); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.depo__texto {
+  flex: 1;
+  margin: 0 0 clamp(20px, 2.4vh, 28px);
+  font-size: clamp(0.86rem, 0.95vw, 0.94rem);
+  font-weight: 500;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
+  text-wrap: pretty;
+}
+
+/* --- autor --- */
+
+.depo__autor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: clamp(16px, 2vh, 22px);
+  border-top: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+/* iniciais no lugar de foto: melhor um avatar honesto do que o rosto de
+   alguém de banco de imagem assinando um depoimento */
+.depo__avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  background: linear-gradient(150deg, #3E74C4 0%, var(--navy) 100%);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.5, 1);
+}
+
+.depo__quem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.depo__nome {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.depo__local {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+/* --- hover: o cartão acende ---------------------------------------------
+   Depois de [data-reveal].is-in por causa da disputa pelo transform.
+   -------------------------------------------------------------------- */
+
+.depo:hover,
+.depo:focus-within {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(217, 158, 36, 0.55);
+  transform: translateY(-7px);
+  box-shadow: 0 26px 50px rgba(4, 10, 28, 0.5);
+}
+
+.depo:hover .depo__aspas,
+.depo:focus-within .depo__aspas { color: rgba(217, 158, 36, 0.3); }
+
+.depo:hover .depo__avatar,
+.depo:focus-within .depo__avatar { transform: scale(1.08); }
+
+@media (max-width: 900px) {
+  /* vira carrossel de arrastar — melhor que setinha e bolinha no toque */
+  .depos__grid {
+    display: flex;
+    gap: 14px;
+    margin-inline: calc(-1 * clamp(22px, 3.4vw, 62px));
+    padding-inline: clamp(22px, 3.4vw, 62px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .depos__grid::-webkit-scrollbar { display: none; }
+
+  .depo {
+    flex: 0 0 min(84%, 340px);
+    scroll-snap-align: center;
+  }
+}
+
+@media (hover: none) {
+  .depo:hover {
+    background: rgba(255, 255, 255, 0.055);
+    border-color: rgba(255, 255, 255, 0.13);
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  .depo:hover .depo__avatar { transform: none; }
+}
+
+/* ==========================================================================
    ENTRADA
    ========================================================================== */
 
@@ -1038,6 +1299,12 @@ a { color: inherit; text-decoration: none; }
   .lead,
   .actions,
   .orb {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .depo.is-in .estrela {
     animation: none;
     opacity: 1;
     transform: none;

@@ -28,6 +28,51 @@
   --orb-left:  none;
   --orb-right: none;
 
+  /* ---- textura de madeira -------------------------------------------------
+     Quatro camadas empilhadas, porque uma só sempre parece papel de parede:
+
+     1. grão   ruído do feTurbulence em SVG, esticado num eixo só pra virar
+               veio de madeira, e girado pra correr junto com as réguas
+     2. junta  linha escura + quina clara logo ao lado. É o par que dá
+               relevo: sem a quina iluminada a junta vira risco de caneta
+     3. régua  cinco tons diferentes antes de repetir, pra o olho não pegar
+               o padrão se repetindo
+     4. luz    clareado num canto e sombreado no outro, pra peça não ficar
+               chapada
+     -------------------------------------------------------------------- */
+  --grao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.62' numOctaves='4' seed='13'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Cg transform='rotate(11 150 150)'%3E%3Crect x='-60' y='-60' width='420' height='420' filter='url(%23g)' opacity='0.62'/%3E%3C/g%3E%3C/svg%3E");
+
+  --madeira-img:
+    linear-gradient(158deg, rgba(255, 236, 208, 0.20) 0%, transparent 42%,
+                            rgba(28, 13, 4, 0.40) 100%),
+    var(--grao),
+    repeating-linear-gradient(101deg,
+      rgba(36, 18, 6, 0.62) 0 1.5px,
+      rgba(255, 226, 189, 0.30) 1.5px 3px,
+      transparent 3px 30px),
+    repeating-linear-gradient(101deg,
+      #9A6733 0 30px, #8A5C2C 30px 60px, #A5713A 60px 90px,
+      #7C4E24 90px 120px, #936130 120px 150px),
+    linear-gradient(160deg, #B07C3E 0%, #6E4622 100%);
+
+  --madeira-size: auto, 300px 300px, auto, auto, auto;
+  --madeira-blend: normal, overlay, normal, normal, normal;
+
+  /* forro branco: mesma lógica de junta, tom quase neutro */
+  --branco-img:
+    linear-gradient(158deg, rgba(255, 255, 255, 0.55) 0%, transparent 46%,
+                            rgba(80, 92, 120, 0.28) 100%),
+    var(--grao),
+    repeating-linear-gradient(101deg,
+      rgba(88, 100, 128, 0.42) 0 1.4px,
+      rgba(255, 255, 255, 0.85) 1.4px 3px,
+      transparent 3px 26px),
+    linear-gradient(160deg, #FBFCFE 0%, #DDE2EC 100%);
+
+  --branco-size: auto, 300px 300px, auto, auto;
+  --branco-blend: normal, soft-light, normal, normal;
+
+
   /* Faixa da equipe — arquivo já vem cortado no tronco, 1198x687.
      O grupo é esticado até a largura da página; a altura sai da
      proporção do arquivo. Não há mais corte por CSS.
@@ -530,29 +575,26 @@ a { color: inherit; text-decoration: none; }
 .orb--left {
   left: clamp(10px, 5vw, 82px);
   top: 44svh;
-  border-color: var(--accent);
+  /* madeira pede o anel dourado; o forro branco fica com o azul */
+  border-color: var(--gold);
 }
 
 .orb--left .orb__img {
-  background-image: var(--orb-left),
-    repeating-linear-gradient(122deg,
-      rgba(255, 255, 255, 0.22) 0 1px,
-      transparent 1px 9px),
-    linear-gradient(150deg, #2E62B4 0%, var(--navy) 100%);
+  background-image: var(--orb-left), var(--madeira-img);
+  background-size: cover, var(--madeira-size);
+  background-blend-mode: normal, var(--madeira-blend);
 }
 
 .orb--right {
   right: clamp(10px, 5vw, 82px);
   top: 76svh;
-  border-color: var(--gold);
+  border-color: var(--accent);
 }
 
 .orb--right .orb__img {
-  background-image: var(--orb-right),
-    repeating-linear-gradient(122deg,
-      rgba(17, 17, 17, 0.10) 0 1px,
-      transparent 1px 9px),
-    linear-gradient(150deg, #E9EAEE 0%, #BFC2CC 100%);
+  background-image: var(--orb-right), var(--branco-img);
+  background-size: cover, var(--branco-size);
+  background-blend-mode: normal, var(--branco-blend);
 }
 
 /* ==========================================================================
@@ -1249,19 +1291,9 @@ a { color: inherit; text-decoration: none; }
   display: none;
   position: absolute;
   inset: -30%;
-  background:
-    /* junta entre as réguas */
-    repeating-linear-gradient(101deg,
-      rgba(58, 32, 12, 0.55) 0 2px,
-      transparent 2px 3px,
-      transparent 3px 26px),
-    /* variação de tom de régua pra régua */
-    repeating-linear-gradient(101deg,
-      #9A6733 0 26px,
-      #83572A 26px 52px,
-      #A8743B 52px 78px,
-      #74491F 78px 104px),
-    linear-gradient(160deg, #B07C3E 0%, #6E4622 100%);
+  background-image: var(--madeira-img);
+  background-size: var(--madeira-size);
+  background-blend-mode: var(--madeira-blend);
   /* as réguas convergem: é o que dá a leitura de teto, não de piso */
   transform: perspective(900px) rotateY(-15deg) rotateX(5deg) scale(1.25);
 }

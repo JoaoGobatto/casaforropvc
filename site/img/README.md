@@ -149,8 +149,13 @@ ler como teto e não como piso).
 
 ## Outras imagens pendentes
 
-- **Círculos decorativos** — os dois `.orb` (esquerda e direita) estão com
-  padrão de ripas em CSS esperando foto de amostra de forro. Entram pelas
-  variáveis `--orb-left` e `--orb-right`, no topo do `style.css`
+- **Círculos decorativos** — os dois `.orb` do hero mostram amostras
+  desenhadas em CSS: madeira na esquerda (anel dourado) e forro branco na
+  direita (anel azul). Fotos reais entram pelas variáveis `--orb-left` e
+  `--orb-right`, no topo do `style.css` — a foto cobre a textura, sem
+  precisar mexer em mais nada.
+
+  A textura de madeira mora nas variáveis `--madeira-img` / `--branco-img`
+  e é a mesma usada na peça da chamada final: mexeu lá, mudou nos dois
 - **Logo real** (`logo.png` / `logo.svg`) — o header usa um lockup
   provisório desenhado em SVG

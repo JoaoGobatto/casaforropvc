@@ -24,15 +24,43 @@ arquivo em uso passou por dois tratamentos:
    cores serrilha a borda do recorte e cria banda nos degradês da pele e
    do jeans.
 
+### ⚠️ O arquivo está sendo ampliado — vale reexportar
+
+O arquivo em uso tem **519×594**. Depois que a equipe cresceu pra ocupar
+a tela do desktop, o elemento renderiza assim:
+
+| Tela | Tamanho na página | Ampliação em telas retina |
+|---|---|---|
+| 1280×800 | 464×531 | 1,8× |
+| 1440×900 | 522×597 | 2,0× |
+| 1920×1080 | 620×710 | 2,4× |
+
+Em monitor comum a imagem fica no tamanho certo. Em tela retina (celular,
+MacBook, monitor 4K) ela é esticada e perde definição — mais visível no
+rosto e no contorno do recorte.
+
+**Alvo pra reexportar: 1300×1490.** Cobre o maior caso (620px) em retina
+com folga.
+
 ### Se for reexportar
 
 - Formato: **PNG-24 com alfa**, já aparado no grupo
-- Largura: **2000px** cobre retina com folga (o elemento tem no máximo
-  580px de altura)
+- Tamanho: **1300×1490** (ver tabela acima)
 - A cor limitada veio do PNG-8 de origem — reexportar da fonte em 24 bits
   melhora a nitidez
 - Peso: passar num compressor (TinyPNG, oxipng). Alvo: **abaixo de 500 KB**
 - Vale gerar também um `.webp` com alfa e servir via `<picture>`
+
+### Como ajustar o tamanho na tela
+
+```css
+--crew-w: clamp(280px, min(40vw, 58vh), 620px);
+```
+
+A **largura** manda — é ela que dá presença na tela larga. A altura sai
+sozinha da proporção do arquivo. O `min(…, 58vh)` é a trava pra que numa
+janela baixa (notebook, navegador com muitas abas) a equipe não estoure a
+altura da tela. Hoje ela ocupa **66% da altura** em qualquer desktop.
 
 **Retoque pendente:** há um resíduo claro do recorte perto da perna da
 pessoa mais à direita, visível quando a imagem renderiza grande.

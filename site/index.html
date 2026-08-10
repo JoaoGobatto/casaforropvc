@@ -123,40 +123,125 @@
 
 </section>
 
-<!-- faixa escura — início da seção 2. O recorte da equipe passa por cima
-     dela, que é o que cria a emenda entre as duas seções. -->
-<section class="strip" id="proxima" aria-label="Seção 2"></section>
+<!-- faixa escura — é ela que corta a faixa da equipe e emenda as seções -->
+<div class="strip" id="proxima" aria-hidden="true"></div>
+
+<!-- ============================================================
+     SEÇÃO 2 — POR QUE A CASA DO FORRO
+     ============================================================ -->
+<section class="motivos" aria-labelledby="motivos-titulo">
+
+  <h2 class="badge badge--sec" id="motivos-titulo" data-reveal>
+    <span class="badge__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M9.1 9a3 3 0 1 1 4.2 2.8c-.8.4-1.3 1.1-1.3 2v.4"/>
+        <circle class="badge__dot" cx="12" cy="17.6" r="1.2"/>
+      </svg>
+    </span>
+    Por que a Casa do Forro
+  </h2>
+
+  <ul class="motivos__grid">
+
+    <li class="motivo" data-reveal>
+      <span class="motivo__icone" aria-hidden="true">
+        <svg viewBox="0 0 36 36">
+          <path d="M18 4 32 11 18 18 4 11Z"/>
+          <path d="M4 18 18 25 32 18"/>
+          <path d="M4 25 18 32 32 25"/>
+        </svg>
+      </span>
+      <h3 class="motivo__titulo">Material em estoque</h3>
+      <p class="motivo__texto">
+        Forro e perfis no nosso galpão, prontos pra sair. A obra não
+        para esperando material chegar do fornecedor.
+      </p>
+    </li>
+
+    <li class="motivo" data-reveal>
+      <span class="motivo__icone" aria-hidden="true">
+        <svg viewBox="0 0 36 36">
+          <circle cx="14" cy="11" r="5.2"/>
+          <path d="M4.5 30.5c0-5.2 4.3-9.4 9.5-9.4 2 0 3.9.6 5.4 1.7"/>
+          <circle cx="27" cy="24" r="6.2"/>
+          <path d="m24.2 24 2 2 4.2-4.2"/>
+        </svg>
+      </span>
+      <h3 class="motivo__titulo">Equipe própria</h3>
+      <p class="motivo__texto">
+        Montagem feita por quem é da casa, treinado em forro PVC.
+        Não terceirizamos o serviço que leva o nosso nome.
+      </p>
+    </li>
+
+    <li class="motivo" data-reveal>
+      <span class="motivo__icone" aria-hidden="true">
+        <svg viewBox="0 0 36 36">
+          <path d="M9 4h12.5L29 11.5V30a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/>
+          <path d="M21.5 4v7.5H29"/>
+          <path d="M12 20h12M12 25.5h8"/>
+        </svg>
+      </span>
+      <h3 class="motivo__titulo">Orçamento fechado</h3>
+      <p class="motivo__texto">
+        Medição no local e valor fechado antes de começar. Você aprova
+        já sabendo quanto vai pagar no final.
+      </p>
+    </li>
+
+    <li class="motivo" data-reveal>
+      <span class="motivo__icone" aria-hidden="true">
+        <svg viewBox="0 0 36 36">
+          <g transform="rotate(-45 18 18)">
+            <rect x="1.5" y="12" width="33" height="12" rx="2.5"/>
+            <path d="M8 12v4.5M14 12v6.5M20 12v4.5M26 12v6.5"/>
+          </g>
+        </svg>
+      </span>
+      <h3 class="motivo__titulo">Acabamento no capricho</h3>
+      <p class="motivo__texto">
+        Recorte, arremate e rodaforro bem resolvidos. É o detalhe que
+        separa serviço bem feito de improviso.
+      </p>
+    </li>
+
+  </ul>
+</section>
 
 <script>
-  // a faixa da equipe entra na primeira rolagem
+  // entrada por rolagem — vale pra faixa da equipe e pros blocos [data-reveal]
   (function () {
-    var crew = document.querySelector('.crew');
-    if (!crew) return;
-
-    function mostrar() { crew.classList.add('is-in'); }
-
-    // sem IntersectionObserver (ou com movimento reduzido), aparece direto
     var semMovimento = window.matchMedia &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var temIO = 'IntersectionObserver' in window;
 
-    if (!('IntersectionObserver' in window) || semMovimento) {
-      mostrar();
-      return;
+    function revelar(el) { el.classList.add('is-in'); }
+
+    // limiar: quanto do elemento precisa entrar na tela pra disparar.
+    // Na faixa da equipe ele PRECISA ser maior que zero — ela encosta na
+    // dobra, então com 0 dispararia já no carregamento.
+    function observar(seletor, limiar) {
+      var itens = document.querySelectorAll(seletor);
+      if (!itens.length) return;
+
+      if (!temIO || semMovimento) {
+        Array.prototype.forEach.call(itens, revelar);
+        return;
+      }
+
+      var io = new IntersectionObserver(function (entradas) {
+        Array.prototype.forEach.call(entradas, function (e) {
+          if (!e.isIntersecting) return;
+          revelar(e.target);
+          io.unobserve(e.target);
+        });
+      }, { threshold: limiar });
+
+      Array.prototype.forEach.call(itens, function (el) { io.observe(el); });
     }
 
-    // o limiar de 8% exige rolagem de verdade: a faixa começa exatamente
-    // na dobra, então com 0 ela dispararia já no carregamento
-    var io = new IntersectionObserver(function (entradas) {
-      for (var i = 0; i < entradas.length; i++) {
-        if (entradas[i].isIntersecting) {
-          mostrar();
-          io.disconnect();
-          return;
-        }
-      }
-    }, { threshold: 0.08 });
-
-    io.observe(crew);
+    observar('.crew', 0.08);
+    observar('[data-reveal]', 0.15);
   })();
 
   // menu mobile

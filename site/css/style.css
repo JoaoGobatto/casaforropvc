@@ -594,6 +594,147 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ==========================================================================
+   SEÇÃO 2 — POR QUE A CASA DO FORRO
+   Modelo da referência: selo à esquerda + cartão largo com 4 colunas
+   separadas por fios finos.
+   ========================================================================== */
+
+.motivos {
+  position: relative;
+  z-index: 1;
+  padding: clamp(56px, 9vh, 110px) var(--gutter) clamp(64px, 10vh, 130px);
+  background: var(--bg);
+}
+
+/* o selo é o próprio h2 — o texto que rotula a seção é o que aparece */
+.badge--sec {
+  /* o .badge base traz a animação de carregamento do hero; aqui quem
+     comanda é a entrada por rolagem */
+  animation: none;
+  margin: 0 0 clamp(18px, 2.6vh, 30px);
+  max-width: 1560px;
+  /* alinha com a borda esquerda do cartão */
+  margin-inline: auto;
+  display: flex;
+  width: fit-content;
+  margin-left: max(0px, calc((100% - 1560px) / 2));
+}
+
+.badge--sec .badge__icon svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--white);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.badge--sec .badge__dot {
+  fill: var(--white);
+  stroke: none;
+}
+
+/* --- cartão de 4 colunas --- */
+
+.motivos__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.motivo {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(26px, 2.6vw, 42px) clamp(22px, 2.2vw, 36px)
+           clamp(34px, 3.4vw, 52px);
+}
+
+/* os fios entre colunas — só entre, nunca nas pontas */
+.motivo + .motivo { border-left: 1px solid var(--line); }
+
+.motivo__icone {
+  display: block;
+  width: clamp(30px, 2.6vw, 38px);
+  margin-bottom: clamp(20px, 2.4vw, 34px);
+  color: var(--ink);
+}
+
+.motivo__icone svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.motivo__titulo {
+  margin: 0 0 clamp(10px, 1.1vh, 15px);
+  font-family: 'Anton', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.05rem, 1.35vw, 1.35rem);
+  line-height: 1.12;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.motivo__texto {
+  margin: 0;
+  font-size: clamp(0.83rem, 0.92vw, 0.9rem);
+  font-weight: 500;
+  line-height: 1.62;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* --- entrada por rolagem, em cascata --- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.85s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.motivo:nth-child(1) { transition-delay: 0.04s; }
+.motivo:nth-child(2) { transition-delay: 0.12s; }
+.motivo:nth-child(3) { transition-delay: 0.20s; }
+.motivo:nth-child(4) { transition-delay: 0.28s; }
+
+@media (max-width: 1000px) {
+  .motivos__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* com 2 colunas o fio da esquerda só vale pra coluna par */
+  .motivo + .motivo { border-left: 0; }
+  .motivo:nth-child(even) { border-left: 1px solid var(--line); }
+  .motivo:nth-child(n + 3) { border-top: 1px solid var(--line); }
+}
+
+@media (max-width: 640px) {
+  .motivos__grid { grid-template-columns: minmax(0, 1fr); }
+
+  .motivo:nth-child(even) { border-left: 0; }
+  .motivo + .motivo { border-top: 1px solid var(--line); }
+
+  .badge--sec { margin-left: 0; }
+}
+
+/* ==========================================================================
    ENTRADA
    ========================================================================== */
 
@@ -722,10 +863,12 @@ a { color: inherit; text-decoration: none; }
     transform: none;
   }
 
-  .crew {
+  .crew,
+  [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;
+    transition-delay: 0s;
   }
 
   .btn,

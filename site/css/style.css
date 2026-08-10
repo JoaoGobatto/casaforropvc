@@ -922,7 +922,7 @@ a { color: inherit; text-decoration: none; }
    ========================================================================== */
 
 .depos {
-  padding: 0 var(--gutter) clamp(70px, 11vh, 140px);
+  padding: 0 var(--gutter) clamp(58px, 9vh, 116px);
   background: var(--bg);
 }
 
@@ -1173,6 +1173,213 @@ a { color: inherit; text-decoration: none; }
   }
 
   .depo:hover .depo__avatar { transform: none; }
+}
+
+/* ==========================================================================
+   SEÇÃO 5 — CHAMADA FINAL
+   Texto à esquerda alinhado com o container, foto sangrando na direita.
+   ========================================================================== */
+
+/* foto do ambiente pronto — trocar o none por url('../img/cta.jpg')
+   e tirar a classe cta__vazio do span no HTML */
+.cta {
+  --cta-foto: none;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 46%);
+  align-items: stretch;
+  overflow: hidden;
+  background: var(--white);
+}
+
+.cta__texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(16px, 2.2vh, 26px);
+  padding: clamp(46px, 7vh, 96px) clamp(24px, 3.5vw, 56px)
+           clamp(46px, 7vh, 96px)
+           max(var(--gutter), calc((100vw - 1560px) / 2));
+}
+
+.cta__titulo {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: 'Anton', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.9vw, 2.7rem);
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* a segunda linha rebaixada é o truque da referência: dá hierarquia
+   dentro do mesmo título, sem mudar corpo nem peso */
+.cta__titulo--fraco { color: #C3C7D0; }
+
+.cta__foto {
+  display: grid;
+  place-items: center;
+  min-height: clamp(230px, 32vh, 380px);
+  background-image: var(--cta-foto),
+    repeating-linear-gradient(115deg,
+      rgba(255, 255, 255, 0.5) 0 1px,
+      transparent 1px 15px),
+    linear-gradient(150deg, #DFE4EE 0%, #C4CCDB 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.cta__vazio {
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .cta { grid-template-columns: minmax(0, 1fr); }
+  .cta__texto { padding-inline: var(--gutter); }
+  .cta__foto { min-height: clamp(200px, 30vh, 280px); }
+}
+
+/* ==========================================================================
+   RODAPÉ
+   ========================================================================== */
+
+.rodape {
+  background: #0C1226;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.rodape__caixa {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: clamp(44px, 6.5vh, 84px) var(--gutter) clamp(22px, 3vh, 34px);
+}
+
+/* --- topo: marca + WhatsApp --- */
+
+.rodape__topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(26px, 4vw, 70px);
+  flex-wrap: wrap;
+  padding-bottom: clamp(30px, 4.4vh, 52px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.rodape__marca { max-width: 46ch; }
+
+.logo--rodape .logo__mark svg { fill: var(--white); }
+.logo--rodape .logo__type { color: var(--white); }
+
+.rodape__tag {
+  margin: 14px 0 0;
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.rodape__zap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.rodape__zap-rotulo {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* o botão dourado só existe aqui: no fundo escuro do rodapé o preto
+   sumiria, e o dourado é a cor de destaque da marca */
+.btn--gold {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.btn--gold:hover { background: #EDB13A; }
+
+/* --- colunas de links --- */
+
+.rodape__cols {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(26px, 3vw, 48px);
+  padding: clamp(30px, 4.4vh, 52px) 0;
+}
+
+.rodape__col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 11px;
+  min-width: 0;
+}
+
+.rodape__col-tit {
+  margin: 0 0 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.rodape__link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  overflow-wrap: anywhere;
+  transition: color 0.25s ease;
+}
+
+.rodape__link:hover { color: var(--gold); }
+
+.rodape__dado {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+/* --- linha final --- */
+
+.rodape__base {
+  margin: 0;
+  padding-top: clamp(20px, 3vh, 30px);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.45);
+  text-wrap: pretty;
+}
+
+@media (max-width: 900px) {
+  .rodape__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 520px) {
+  .rodape__cols { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .rodape__zap { width: 100%; }
+  .rodape__zap .btn { width: 100%; max-width: 320px; justify-content: center; }
 }
 
 /* ==========================================================================

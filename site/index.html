@@ -310,7 +310,7 @@
       </p>
     </div>
 
-    <ul class="depos__grid">
+    <ul class="depos__grid" data-reveal-group>
 
       <li class="depo" data-reveal>
         <span class="depo__aspas" aria-hidden="true">&rdquo;</span>
@@ -373,6 +373,117 @@
   </div>
 </section>
 
+<!-- ============================================================
+     SEÇÃO 5 — CHAMADA FINAL
+     ============================================================ -->
+<section class="cta" aria-labelledby="cta-titulo">
+  <div class="cta__texto">
+    <span class="badge badge--sec" data-reveal>
+      <span class="badge__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+      </span>
+      Bora começar
+    </span>
+
+    <h2 class="cta__titulo" id="cta-titulo" data-reveal>
+      <span>Vamos deixar seu teto novo</span>
+      <span class="cta__titulo--fraco">com quem faz isso todo dia.</span>
+    </h2>
+
+    <a class="btn btn--dark" href="#orcamento" data-reveal>
+      Peça um orçamento
+      <svg class="btn__arrow" viewBox="0 0 18 12" aria-hidden="true">
+        <path d="M0 6h16M11.5 1 17 6l-5.5 5"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- foto de ambiente pronto; entra por --cta-foto no style.css -->
+  <div class="cta__foto" aria-hidden="true">
+    <span class="cta__vazio">foto de forro instalado</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     RODAPÉ
+     ⚠️ Telefone, e-mail, endereço, horário, CNPJ e links de rede
+     são PLACEHOLDER. Preencher antes de publicar.
+     ============================================================ -->
+<footer class="rodape">
+  <div class="rodape__caixa">
+
+    <div class="rodape__topo">
+      <div class="rodape__marca">
+        <a class="logo logo--rodape" href="#hero" aria-label="Casa do Forro PVC — página inicial">
+          <span class="logo__mark" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <path d="M50 8 L94 42 L82 42 L82 92 L18 92 L18 42 L6 42 Z"/>
+              <path class="logo__line" d="M30 60 H70"/>
+            </svg>
+          </span>
+          <span class="logo__type">Casa do Forro</span>
+        </a>
+        <p class="rodape__tag">
+          Montagem de forro PVC com equipe própria, material em estoque
+          e acabamento bem resolvido.
+        </p>
+      </div>
+
+      <div class="rodape__zap">
+        <span class="rodape__zap-rotulo">Fala com a gente agora</span>
+        <a class="btn btn--gold" href="https://wa.me/5500000000000" target="_blank" rel="noopener">
+          Chamar no WhatsApp
+          <svg class="btn__arrow" viewBox="0 0 18 12" aria-hidden="true">
+            <path d="M0 6h16M11.5 1 17 6l-5.5 5"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="rodape__cols">
+      <nav class="rodape__col" aria-label="Redes sociais">
+        <h2 class="rodape__col-tit">Redes</h2>
+        <a class="rodape__link" href="#">Instagram</a>
+        <a class="rodape__link" href="#">Facebook</a>
+        <a class="rodape__link" href="#">WhatsApp</a>
+        <a class="rodape__link" href="#">Google Meu Negócio</a>
+      </nav>
+
+      <nav class="rodape__col" aria-label="Navegação do rodapé">
+        <h2 class="rodape__col-tit">Navegar</h2>
+        <a class="rodape__link" href="#hero">Início</a>
+        <a class="rodape__link" href="#empresa">Empresa</a>
+        <a class="rodape__link" href="#obras">Obras</a>
+        <a class="rodape__link" href="#depoimentos">Depoimentos</a>
+        <a class="rodape__link" href="#contato">Contato</a>
+      </nav>
+
+      <nav class="rodape__col" aria-label="Institucional">
+        <h2 class="rodape__col-tit">Institucional</h2>
+        <a class="rodape__link" href="#">Política de privacidade</a>
+        <a class="rodape__link" href="#">Termos de uso</a>
+        <a class="rodape__link" href="#">Trabalhe com a gente</a>
+      </nav>
+
+      <div class="rodape__col">
+        <h2 class="rodape__col-tit">Contato</h2>
+        <a class="rodape__link" href="tel:+5500000000000">(00) 0000-0000</a>
+        <a class="rodape__link" href="mailto:contato@casadoforropvc.com.br">contato@casadoforropvc.com.br</a>
+        <p class="rodape__dado">Rua Exemplo, 000<br>Bairro · Cidade/UF</p>
+        <p class="rodape__dado">Seg a sex, 8h às 18h<br>Sáb, 8h às 12h</p>
+      </div>
+    </div>
+
+    <p class="rodape__base">
+      © 2026 Casa do Forro PVC · CNPJ 00.000.000/0001-00 —
+      Todos os direitos reservados.
+    </p>
+
+  </div>
+</footer>
+
 <script>
   // entrada por rolagem — vale pra faixa da equipe e pros blocos [data-reveal]
   (function () {
@@ -405,8 +516,38 @@
       Array.prototype.forEach.call(itens, function (el) { io.observe(el); });
     }
 
+    // grupos que rolam na horizontal (o carrossel de depoimentos): os
+    // cartões fora da tela nunca cruzariam a viewport sozinhos e ficariam
+    // invisíveis pra sempre. Quem é observado é o grupo; os filhos entram
+    // junto, mas mantêm o escalonamento do transition-delay do CSS.
+    function observarGrupo(seletor, limiar) {
+      var grupos = document.querySelectorAll(seletor);
+      if (!grupos.length) return;
+
+      Array.prototype.forEach.call(grupos, function (grupo) {
+        var filhos = grupo.querySelectorAll('[data-reveal]');
+
+        function abrir() {
+          revelar(grupo);
+          Array.prototype.forEach.call(filhos, revelar);
+        }
+
+        if (!temIO || semMovimento) { abrir(); return; }
+
+        var io = new IntersectionObserver(function (entradas) {
+          if (!entradas[0].isIntersecting) return;
+          abrir();
+          io.disconnect();
+        }, { threshold: limiar });
+
+        io.observe(grupo);
+      });
+    }
+
     observar('.crew', 0.08);
-    observar('[data-reveal]', 0.15);
+    // os que estão dentro de um grupo ficam de fora daqui
+    observar('[data-reveal]:not([data-reveal-group] [data-reveal])', 0.15);
+    observarGrupo('[data-reveal-group]', 0.12);
   })();
 
   // menu mobile

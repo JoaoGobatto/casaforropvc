@@ -10,6 +10,8 @@
 </head>
 <body>
 
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
 <!-- ============================================================
      SEÇÃO 1 — HERO
      Layout copiado da referência Fixbild.
@@ -23,7 +25,7 @@
   </div>
 
   <!-- ---------- BARRA FLUTUANTE ---------- -->
-  <header class="bar">
+  <header class="bar" role="banner">
     <div class="bar__inner">
 
       <a class="logo" href="#hero" aria-label="Casa do Forro PVC — página inicial">
@@ -37,7 +39,7 @@
       </a>
 
       <nav class="menu" id="menu" aria-label="Navegação principal">
-        <a class="menu__item is-active" href="#hero">Início</a>
+        <a class="menu__item is-active" href="#hero" aria-current="page">Início</a>
         <a class="menu__item" href="#empresa">Empresa</a>
         <a class="menu__item menu__item--has-sub" href="#servicos">
           Serviços
@@ -73,7 +75,7 @@
   </header>
 
   <!-- ---------- CONTEÚDO CENTRAL ---------- -->
-  <div class="hero__inner">
+  <main class="hero__inner" id="conteudo">
 
     <span class="badge">
       <span class="badge__icon" aria-hidden="true">
@@ -110,7 +112,7 @@
       </a>
     </div>
 
-  </div>
+  </main>
 
   <!-- círculos com foto de produto -->
   <figure class="orb orb--left" aria-hidden="true"><span class="orb__img"></span></figure>
@@ -132,28 +134,45 @@
     var menu = document.getElementById('menu');
     if (!burger || !menu) return;
 
-    function close() {
-      burger.setAttribute('aria-expanded', 'false');
-      burger.setAttribute('aria-label', 'Abrir menu');
-      menu.classList.remove('is-open');
-      document.body.classList.remove('menu-locked');
+    function isOpen() {
+      return burger.getAttribute('aria-expanded') === 'true';
     }
 
-    burger.addEventListener('click', function () {
-      var open = burger.getAttribute('aria-expanded') === 'true';
-      if (open) { close(); return; }
+    function open() {
       burger.setAttribute('aria-expanded', 'true');
       burger.setAttribute('aria-label', 'Fechar menu');
       menu.classList.add('is-open');
       document.body.classList.add('menu-locked');
+
+      // o painel vem ANTES do burger no DOM: sem mandar o foco pra dentro,
+      // quem navega por teclado abre o menu e o Tab pula ele inteiro
+      var first = menu.querySelector('.menu__item');
+      if (first) first.focus();
+    }
+
+    // returnFocus: devolve o foco pro burger. Só quando o menu foi fechado
+    // por teclado ou pelo próprio botão — num clique em item o foco segue
+    // o link, e roubá-lo de volta atrapalharia.
+    function close(returnFocus) {
+      if (!isOpen()) return;
+      burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Abrir menu');
+      menu.classList.remove('is-open');
+      document.body.classList.remove('menu-locked');
+      if (returnFocus) burger.focus();
+    }
+
+    burger.addEventListener('click', function () {
+      if (isOpen()) { close(true); return; }
+      open();
     });
 
     menu.addEventListener('click', function (e) {
-      if (e.target.closest('.menu__item')) close();
+      if (e.target.closest('.menu__item')) close(false);
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') close();
+      if (e.key === 'Escape') close(true);
     });
   })();
 </script>

@@ -1,12 +1,8 @@
 # site/img — imagens do site
 
-Nenhuma imagem está aqui ainda. Enquanto os arquivos não existirem, o
-layout continua funcionando: os slots caem em padrões CSS ou ficam
-vazios, sem quadro quebrado.
-
 ---
 
-## `equipe-recorte.png` — a imagem que fecha a seção 1
+## `equipe-recorte.png` — a imagem que fecha a seção 1 ✅ em uso
 
 **É a versão com fundo transparente**, não a do galpão.
 
@@ -15,18 +11,31 @@ fundo claro, sem moldura, atravessando a emenda pra faixa escura. Uma foto
 com fundo viraria um retângulo — e retângulo não atravessa emenda, ele
 corta a página em duas.
 
-### Como exportar
+### O que foi feito no arquivo enviado
 
-**Apare o PNG na caixa do grupo.** O arquivo original tem uma faixa larga
-de transparência de cada lado, e o CSS usa `background-size: contain` —
-transparência conta como imagem, então cada pixel vazio encolhe a equipe
-na tela. Aparado, o grupo ocupa o quadro inteiro.
+O upload original está preservado em `equipe-recorte-original.png`. O
+arquivo em uso passou por dois tratamentos:
 
-- Formato: **PNG-24 com alfa** (PNG-8 serrilha a borda do recorte)
-- Largura: **2000px** já aparado é suficiente — o elemento tem no máximo
-  580px de altura, então 2000px cobre telas retina com folga
+1. **Aparado na caixa do grupo** — 1376×768 → **519×594**. O original
+   tinha 441px de transparência à esquerda e 416px à direita. O CSS usa
+   `background-size: contain`, e transparência conta como imagem: cada
+   pixel vazio encolhia a equipe na tela. Aparado, o grupo ocupa o quadro.
+2. **Convertido de PNG-8 (paleta) para PNG-24 com alfa** — a paleta de 256
+   cores serrilha a borda do recorte e cria banda nos degradês da pele e
+   do jeans.
+
+### Se for reexportar
+
+- Formato: **PNG-24 com alfa**, já aparado no grupo
+- Largura: **2000px** cobre retina com folga (o elemento tem no máximo
+  580px de altura)
+- A cor limitada veio do PNG-8 de origem — reexportar da fonte em 24 bits
+  melhora a nitidez
 - Peso: passar num compressor (TinyPNG, oxipng). Alvo: **abaixo de 500 KB**
 - Vale gerar também um `.webp` com alfa e servir via `<picture>`
+
+**Retoque pendente:** há um resíduo claro do recorte perto da perna da
+pessoa mais à direita, visível quando a imagem renderiza grande.
 
 ### Ajustes de composição
 

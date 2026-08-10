@@ -2,91 +2,101 @@
 
 ---
 
-## `equipe-recorte.png` — a imagem que fecha a seção 1 ✅ em uso
+## `equipe-faixa.webp` — a faixa da seção 1 ✅ em uso
 
-**É a versão com fundo transparente**, não a do galpão.
+**1198 × 687, WebP com alfa, 92 KB.** É o arquivo que o CSS carrega.
+`equipe-faixa.png` é o mesmo conteúdo sem perda (1,2 MB) — fica guardado
+como master pra futuros recortes, não é servido.
 
-O efeito da referência depende disso: a imagem é um objeto solto sobre o
-fundo claro, sem moldura, atravessando a emenda pra faixa escura. Uma foto
-com fundo viraria um retângulo — e retângulo não atravessa emenda, ele
-corta a página em duas.
+### O upload veio com o fundo chapado
 
-### O que foi feito no arquivo enviado
+O arquivo enviado (`Gemini_Generated_Image_ffksncffksncffks.png`) **não
+tinha transparência**: todos os pixels vinham opacos e o "fundo" era o
+quadriculado cinza-e-branco desenhado. Era uma captura de tela da
+pré-visualização, não o arquivo com alfa.
 
-O upload original está preservado em `equipe-recorte-original.png`. O
-arquivo em uso passou por dois tratamentos:
+Dava pra ver na medição: os pixels do fundo alternavam entre `#CECECE` e
+`#FFFFFF` num padrão regular, e o canal alfa tinha 0 pixels transparentes
+em 1.056.768.
 
-1. **Aparado na caixa do grupo** — 1376×768 → **519×594**. O original
-   tinha 441px de transparência à esquerda e 416px à direita. O CSS usa
-   `background-size: contain`, e transparência conta como imagem: cada
-   pixel vazio encolhia a equipe na tela. Aparado, o grupo ocupa o quadro.
-2. **Convertido de PNG-8 (paleta) para PNG-24 com alfa** — a paleta de 256
-   cores serrilha a borda do recorte e cria banda nos degradês da pele e
-   do jeans.
+O alfa foi reconstruído assim:
 
-### 🚨 A imagem precisa ser refeita maior — é o gargalo agora
+1. Marca todo pixel **neutro e claro** (canais R≈G≈B, valor ≥ 185)
+2. Preenche a partir das **bordas** — só vira transparente o que está
+   ligado à borda. É isso que impede que brilhos brancos dentro da
+   camisa e do rosto virem buraco
+3. Encolhe a máscara em 1px pra remover a franja que se misturou com o
+   quadriculado, e suaviza a borda
+4. Apara na caixa do grupo → 1198 × 687
 
-O arquivo tem **519px de largura**. Desde que a equipe virou faixa de
-largura total, ela é esticada até a largura da página inteira:
+Se um dia precisar refazer, o caminho é pedir o PNG com alfa de verdade
+em vez de captura de tela — o resultado é mais limpo do que qualquer
+reconstrução.
 
-| Tela | Grupo renderizado | Ampliação | Em retina |
-|---|---|---|---|
-| 390 (celular) | 390px | 0,8× | 1,5× |
-| 1280×800 | 1280px | 2,5× | 4,9× |
-| 1440×900 | 1440px | 2,8× | 5,5× |
-| 1920×1080 | 1920px | 3,7× | 7,4× |
+### Resolução
 
-No celular está ótimo. **No desktop está visivelmente borrado** — dá pra
-ver no contorno do cabelo, na barba e na transição azul/vermelho das
-camisas. É a primeira coisa que o visitante vê, então vale resolver.
+O grupo tem 1198px de largura e é esticado até a largura da página:
 
-Não dá pra consertar por software: a informação não existe no arquivo.
-A imagem precisa ser **gerada de novo em resolução maior**, não só
-reexportada.
+| Tela | Ampliação | Em retina |
+|---|---|---|
+| 390 (celular) | 0,33× (reduz) | 0,65× |
+| 1280×800 | 1,07× | 2,1× |
+| 1440×900 | 1,20× | 2,4× |
+| 1920×1080 | 1,60× | 3,2× |
 
-**Alvo: 2880px de largura.** Cobre 1440px em tela retina.
-
-Como só o tronco pra cima aparece, dá pra exportar já cortado —
-**2880 × 1980** basta, sem as pernas. Se vier assim, é só ajustar duas
-linhas do `style.css` (`--crew-cut: 1` e a proporção em `--crew-h`).
-
-Em PNG-24 esse tamanho passa fácil de 3 MB. Melhor caminho: **WebP com
-alfa**, que fica em torno de 300-600 KB com a mesma qualidade, e deixar o
-PNG só como fallback no `<picture>`.
+Em monitor comum está nítido em qualquer tamanho. Em retina ainda há
+ampliação, mas o resultado ficou bom — é **2,3× mais informação** que o
+arquivo anterior (519px). Só vale mexer nisso de novo se aparecer
+incômodo real: o alvo seria 2880px de largura.
 
 ### Como ajustar o enquadramento
 
 ```css
 --crew-span: 100vw;   /* largura do grupo. 100vw = de ponta a ponta */
---crew-cut:  0.60;    /* fração da altura que aparece */
+--crew-h: min(calc(var(--crew-span) * 687 / 1198), 88vh);
 ```
 
-`--crew-span` é o que controla o tamanho das pessoas. Baixar pra `70vw`
-deixa a equipe menor e **bem mais nítida** — é a saída se você preferir
-não refazer a imagem.
+`--crew-span` controla o tamanho das pessoas. Passar de `100vw` amplia o
+grupo e corta as pessoas das pontas nas bordas da tela.
 
-`--crew-cut` é onde as pernas são cortadas. Medi a cobertura do alfa
-linha a linha: até 63% da altura é tronco; passando disso as pernas se
-separam e o corte fica estranho. 0,60 corta logo abaixo dos braços
-cruzados.
+O `687 / 1198` é a proporção do arquivo — **se trocar a imagem por uma de
+outra proporção, esses dois números mudam**.
 
-A trava `78vh` no `--crew-h` impede que numa janela baixa a faixa tome a
-tela inteira.
+A trava `88vh` impede que numa janela baixa a faixa tome a tela inteira;
+quando ela entra, o corte extra sai por baixo, escondido pela faixa preta.
+
+### Retoque pendente
+
+Sobrou um risco azul claro, tipo brilho, na altura do ombro da pessoa
+mais à direita. Veio da imagem original — está dentro do recorte, então
+não dá pra tirar automaticamente sem apagar pedaço da camisa.
+
+---
+
+## Arquivos guardados (não servidos)
+
+| Arquivo | O que é |
+|---|---|
+| `equipe-faixa.png` | master sem perda da faixa em uso |
+| `Gemini_Generated_Image_ffksncffksncffks.png` | upload original, com o quadriculado chapado |
+| `equipe-recorte-original.png` | primeira versão, corpo inteiro, 519px |
+
+A versão anterior derivada (`equipe-recorte.png`) foi removida — está no
+histórico do git se precisar.
 
 ## `equipe-galpao.jpg` — a versão com fundo
 
-Não é usada na seção 1, mas **guardar**. É a foto certa pra seção de
-empresa ou de obras, onde o galpão cheio de estoque é o argumento —
-mostra porte e capacidade de entrega, coisa que o recorte perde.
+Ainda não subiu. Não entra na seção 1, mas vale guardar: é a foto certa
+pra seção de empresa ou de obras, onde o galpão cheio de estoque é o
+argumento — mostra porte e capacidade de entrega, coisa que o recorte
+perde.
 
 Exportar em JPG qualidade 78-82, abaixo de 600 KB.
-
----
 
 ## Outras imagens pendentes
 
 - **Círculos decorativos** — os dois `.orb` (esquerda e direita) estão com
   padrão de ripas em CSS esperando foto de amostra de forro. Entram pelas
-  variáveis `--orb-left` e `--orb-right`, também no topo do `style.css`
+  variáveis `--orb-left` e `--orb-right`, no topo do `style.css`
 - **Logo real** (`logo.png` / `logo.svg`) — o header usa um lockup
   provisório desenhado em SVG

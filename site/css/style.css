@@ -28,18 +28,15 @@
   --orb-left:  none;
   --orb-right: none;
 
-  /* Recorte da equipe (PNG transparente, aparado no grupo — 519x594).
-     Vira uma FAIXA: o grupo é esticado até a largura da página e só a
-     parte de cima aparece; as pernas ficam abaixo do corte.
+  /* Faixa da equipe — arquivo já vem cortado no tronco, 1198x687.
+     O grupo é esticado até a largura da página; a altura sai da
+     proporção do arquivo. Não há mais corte por CSS.
 
      --crew-span  largura do grupo (100vw = de ponta a ponta)
-     --crew-cut   fração da altura do arquivo que aparece. Medido no alfa:
-                  até 63% é tronco; a partir daí as pernas se separam
-     --crew-h     sai das duas, com trava de altura pra janela baixa */
-  --crew: url('../img/equipe-recorte.png');
+     --crew-h     687/1198 da largura, com trava pra janela baixa */
+  --crew: url('../img/equipe-faixa.webp');
   --crew-span: 100vw;
-  --crew-cut: 0.60;
-  --crew-h: min(calc(var(--crew-span) * 594 / 519 * var(--crew-cut)), 78vh);
+  --crew-h: min(calc(var(--crew-span) * 687 / 1198), 88vh);
   --crew-bleed: clamp(28px, 4.5vh, 62px); /* o quanto some sob a faixa */
   --strip-h: clamp(88px, 12vh, 124px);
 }

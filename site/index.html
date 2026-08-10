@@ -128,6 +128,37 @@
 <section class="strip" id="proxima" aria-label="Seção 2"></section>
 
 <script>
+  // a faixa da equipe entra na primeira rolagem
+  (function () {
+    var crew = document.querySelector('.crew');
+    if (!crew) return;
+
+    function mostrar() { crew.classList.add('is-in'); }
+
+    // sem IntersectionObserver (ou com movimento reduzido), aparece direto
+    var semMovimento = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!('IntersectionObserver' in window) || semMovimento) {
+      mostrar();
+      return;
+    }
+
+    // o limiar de 8% exige rolagem de verdade: a faixa começa exatamente
+    // na dobra, então com 0 ela dispararia já no carregamento
+    var io = new IntersectionObserver(function (entradas) {
+      for (var i = 0; i < entradas.length; i++) {
+        if (entradas[i].isIntersecting) {
+          mostrar();
+          io.disconnect();
+          return;
+        }
+      }
+    }, { threshold: 0.08 });
+
+    io.observe(crew);
+  })();
+
   // menu mobile
   (function () {
     var burger = document.querySelector('.burger');

@@ -100,7 +100,11 @@ a { color: inherit; text-decoration: none; }
   /* a faixa escura pinta POR CIMA do recorte: é ela que corta a imagem,
      do mesmo jeito que corta o telhado na referência */
   z-index: 0;
-  min-height: 100svh;
+  /* a primeira tela e o conteudo cabem em 100svh; a faixa da equipe
+     comeca exatamente na dobra, entao so aparece depois da rolagem */
+  /* o +24px e folga: sem ele a faixa para a 3px da dobra no mobile, e
+     qualquer variacao de svh (barra do navegador) deixaria vazar um fio */
+  min-height: calc(100svh + var(--crew-h) - var(--crew-bleed) + 24px);
   display: flex;
   flex-direction: column;
   background: var(--bg);
@@ -517,10 +521,13 @@ a { color: inherit; text-decoration: none; }
   background-position: center;
 }
 
-/* enquanto não há foto, o padrão de ripas segura o lugar */
+/* Ancorados na PRIMEIRA TELA (svh), não no hero: o hero ficou muito mais
+   alto pra empurrar a faixa da equipe pra baixo da dobra, e uma
+   porcentagem daquilo jogaria os círculos pro meio do nada.
+   Enquanto não há foto, o padrão de ripas segura o lugar. */
 .orb--left {
   left: clamp(10px, 5vw, 82px);
-  top: 42%;
+  top: 44svh;
   border-color: var(--accent);
 }
 
@@ -534,7 +541,7 @@ a { color: inherit; text-decoration: none; }
 
 .orb--right {
   right: clamp(10px, 5vw, 82px);
-  bottom: clamp(40px, 9vh, 96px);
+  top: 76svh;
   border-color: var(--gold);
 }
 
@@ -563,12 +570,20 @@ a { color: inherit; text-decoration: none; }
   background-size: var(--crew-span) auto;
   /* a sombra assenta o recorte no fundo — sem ela ele parece colado */
   filter: drop-shadow(0 24px 34px rgba(17, 17, 17, 0.20));
-  animation: crewIn 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.45s both;
+
+  /* estado inicial: escondida abaixo da dobra. A classe is-in entra por
+     JS quando a faixa cruza a viewport — ver o IntersectionObserver */
+  opacity: 0;
+  transform: translateY(72px) scale(0.985);
+  transform-origin: 50% 100%;
+  will-change: opacity, transform;
+  transition: opacity 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 1.15s cubic-bezier(0.16, 0.84, 0.32, 1);
 }
 
-@keyframes crewIn {
-  from { opacity: 0; transform: translateY(26px); }
-  to   { opacity: 1; transform: translateY(0); }
+.crew.is-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .strip {
@@ -644,7 +659,8 @@ a { color: inherit; text-decoration: none; }
   .cart__badge { top: 4px; right: 4px; }
 
   .orb { width: clamp(60px, 9vw, 84px); }
-  .orb--left { top: 36%; }
+  .orb--left { top: 38svh; }
+  .orb--right { top: 72svh; }
 }
 
 @media (max-width: 640px) {
@@ -707,9 +723,9 @@ a { color: inherit; text-decoration: none; }
   }
 
   .crew {
-    animation: none;
     opacity: 1;
     transform: none;
+    transition: none;
   }
 
   .btn,

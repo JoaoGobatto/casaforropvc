@@ -1,0 +1,696 @@
+/* ==========================================================================
+   Casa do Forro PVC — Seção 1 (hero)
+   Estrutura copiada da referência; paleta e tipografia da marca.
+   ========================================================================== */
+
+:root {
+  /* --- cores da marca --- */
+  --navy-950: #060D22;   /* fundo mais profundo */
+  --navy-900: #0A1330;   /* fundo do hero */
+  --navy-700: #172D68;   /* azul institucional */
+  --blue-500: #2455A4;   /* azul vivo — marca gráfica gigante */
+  --gold:     #D99E24;   /* dourado — destaques e CTA */
+  --wood:     #83572A;   /* marrom madeira — apoio */
+  --ink:      #111111;
+  --white:    #FFFFFF;
+
+  /* neutros puxados pro azul da marca, não cinza puro */
+  --mist:     rgba(233, 238, 250, 0.72);
+  --hair:     rgba(226, 234, 252, 0.22);
+  --hair-str: rgba(226, 234, 252, 0.40);
+
+  /* --- métrica --- */
+  --gutter: clamp(20px, 3.6vw, 54px);
+  --radius: 14px;
+
+  /* trocar por outro arquivo é só mudar aqui */
+  --photo: url('../img/equipe.jpg');
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--navy-950);
+  color: var(--white);
+  font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.nav-locked { overflow: hidden; }
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   HERO — grade geral
+   linha 1 header · linha 2 título · linha 3 cards + botão de scroll
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: clamp(22px, 2.6vh, 34px) var(--gutter) clamp(26px, 3.4vh, 40px);
+  gap: 0;
+}
+
+/* --- camada 1: foto ------------------------------------------------------ */
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  /* a segunda camada é o fallback: se a foto ainda não estiver em
+     img/equipe.jpg, o gradiente continua pintando o fundo */
+  background-image: var(--photo),
+    radial-gradient(120% 90% at 62% 46%, #23407e 0%, #12224d 46%, var(--navy-950) 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center 42%;
+
+  /* abertura: fecha no rosto do centro e abre revelando a equipe */
+  transform-origin: 50% 38%;
+  will-change: transform;
+  animation: heroReveal 7s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes heroReveal {
+  from { transform: scale(2.2); }
+  to   { transform: scale(1); }
+}
+
+/* --- camada 2: escurecimento --------------------------------------------- */
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(100deg,
+      rgba(6, 13, 34, 0.94) 0%,
+      rgba(6, 13, 34, 0.86) 26%,
+      rgba(8, 17, 42, 0.52) 58%,
+      rgba(8, 17, 42, 0.62) 100%),
+    linear-gradient(to bottom,
+      rgba(6, 13, 34, 0.80) 0%,
+      rgba(6, 13, 34, 0.10) 26%,
+      rgba(6, 13, 34, 0.20) 62%,
+      rgba(6, 13, 34, 0.78) 100%);
+}
+
+/* --- camada 3: marca gráfica gigante ------------------------------------- */
+
+/* dimensionada pela ALTURA — assim ela não estoura em telas largas e
+   mantém a proporção da referência (ocupa ~metade da altura do hero) */
+.hero__mark {
+  position: absolute;
+  z-index: 2;
+  right: -3vw;
+  top: 58%;
+  height: min(54vh, 470px);
+  transform: translateY(-50%);
+  animation: markIn 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) 0.25s both;
+}
+
+.hero__mark svg {
+  display: block;
+  height: 100%;
+  width: auto;
+}
+
+.mark__house {
+  fill: var(--blue-500);
+  opacity: 0.92;
+}
+
+.mark__forro {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2.6;
+  stroke-linecap: square;
+}
+
+@keyframes markIn {
+  from { opacity: 0; transform: translateY(-50%) translateX(7%) scale(1.05); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0) scale(1); }
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+.hd {
+  position: relative;
+  z-index: 5;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  animation: rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s both;
+}
+
+.hd__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* --- logo --- */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.brand__mark {
+  width: 30px;
+  flex: none;
+}
+
+.brand__mark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  fill: var(--white);
+}
+
+.brand__mark .brand__line {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 7;
+}
+
+.brand__type {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  gap: 3px;
+}
+
+.brand__l1 {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+}
+
+.brand__l1 em {
+  font-style: normal;
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+.brand__l2 {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  color: var(--gold);
+}
+
+/* --- ações do topo --- */
+
+.hd__actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.4vw, 22px);
+}
+
+.hd__phone {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+
+.hd__phone:hover { color: var(--gold); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border: 1px solid var(--hair-str);
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+}
+
+.pill:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(217, 158, 36, 0.10);
+}
+
+.pill__chev {
+  width: 10px;
+  height: auto;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hd__ig {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--hair-str);
+  border-radius: 50%;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.hd__ig:hover { border-color: var(--gold); color: var(--gold); }
+
+.hd__ig svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.hd__ig .dot {
+  fill: currentColor;
+  stroke: none;
+}
+
+.hd__burger {
+  display: none;
+  width: 38px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.hd__burger span {
+  display: block;
+  height: 1.5px;
+  width: 100%;
+  background: var(--white);
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.hd__burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hd__burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hd__burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* --- navegação com os fios finos --- */
+
+.nav {
+  display: flex;
+  align-items: flex-start;
+  margin-top: clamp(18px, 2.4vh, 30px);
+}
+
+.nav__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  padding-block: 4px;
+  transition: color 0.25s ease;
+}
+
+.nav__item:hover { color: var(--gold); }
+
+.nav__chev {
+  width: 9px;
+  height: auto;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.7;
+}
+
+.nav__rule {
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 18px;
+  margin: 5px clamp(14px, 2.1vw, 30px) 0;
+  background: var(--hair);
+}
+
+.nav__rule--wide { flex-grow: 2.6; }
+
+/* ==========================================================================
+   TÍTULO
+   ========================================================================== */
+
+.hero__copy {
+  position: relative;
+  z-index: 4;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  align-self: center;
+  /* sobe o bloco acima do centro óptico, como na referência */
+  margin-bottom: clamp(16px, 11vh, 150px);
+}
+
+.ttl {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  /* o piso em vw é alto de propósito: como as linhas não quebram,
+     é o tamanho da fonte que precisa caber na tela estreita */
+  font-size: clamp(1.9rem, 8.6vw, 5.4rem);
+  line-height: 1.03;
+  letter-spacing: -0.028em;
+}
+
+/* as duas linhas são quebras de composição, não de fluxo —
+   o tamanho da fonte é que controla a largura do bloco */
+.ttl__l1,
+.ttl__l2 { white-space: nowrap; }
+
+.ttl__l1 {
+  font-weight: 800;
+  animation: rise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.45s both;
+}
+
+.ttl__l2 {
+  font-weight: 300;
+  animation: rise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.60s both;
+}
+
+.sub {
+  margin: clamp(18px, 2.4vh, 30px) 0 0;
+  font-size: clamp(0.95rem, 1.05vw, 1.06rem);
+  font-weight: 600;
+  line-height: 1.5;
+  max-width: 38ch;
+  color: rgba(255, 255, 255, 0.94);
+  animation: rise 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.78s both;
+}
+
+/* ==========================================================================
+   CARDS
+   ========================================================================== */
+
+.cards {
+  position: relative;
+  z-index: 4;
+  grid-column: 1;
+  grid-row: 3;
+  align-self: end;
+  justify-self: start;
+  display: flex;
+  gap: 16px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: clamp(186px, 16.5vw, 232px);
+  min-height: 130px;
+  padding: 15px 16px 0;
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--navy-700);
+  box-shadow: 0 18px 44px rgba(3, 8, 24, 0.34);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+              box-shadow 0.35s ease;
+  animation: rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.cards .card:nth-child(1) { animation-delay: 0.95s; }
+.cards .card:nth-child(2) { animation-delay: 1.06s; }
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 56px rgba(3, 8, 24, 0.44);
+}
+
+.card__head {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.card__name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+.card__num {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(23, 45, 104, 0.48);
+  font-variant-numeric: tabular-nums;
+}
+
+/* faixa de imagem colada na base do card.
+   enquanto não há foto real, o padrão de ripas segura o lugar */
+.card__thumb {
+  margin: auto -16px 0;
+  height: 52px;
+}
+
+.card__thumb--forro {
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(23, 45, 104, 0.14) 0 1px,
+      transparent 1px 13px),
+    linear-gradient(170deg, #F2F5FB 0%, #D7DEEC 100%);
+}
+
+.card__thumb--acab {
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(255, 255, 255, 0.16) 0 1px,
+      transparent 1px 15px),
+    linear-gradient(170deg, #A67437 0%, var(--wood) 100%);
+}
+
+.card__go {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--navy-700);
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.card:hover .card__go {
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.card__go svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: var(--white);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==========================================================================
+   BOTÃO DE SCROLL
+   ========================================================================== */
+
+.scroll {
+  position: relative;
+  z-index: 4;
+  grid-column: 2;
+  grid-row: 3;
+  align-self: end;
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--hair-str);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+  animation: rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 1.2s both;
+}
+
+.scroll:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(217, 158, 36, 0.12);
+}
+
+.scroll svg {
+  width: 13px;
+  height: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: bob 2.4s ease-in-out 2s infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+
+/* ==========================================================================
+   ENTRADA
+   ========================================================================== */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   RESPONSIVO
+   ========================================================================== */
+
+@media (max-width: 1080px) {
+  .hero__mark { height: min(44vh, 380px); right: -8vw; }
+}
+
+@media (max-width: 900px) {
+  .hd__phone,
+  .pill,
+  .hd__ig { display: none; }
+
+  .hd__burger { display: flex; }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--hair);
+  }
+
+  .nav.is-open { display: flex; }
+
+  .nav__item {
+    font-size: 17px;
+    font-weight: 600;
+    padding-block: 11px;
+  }
+
+  .nav__rule {
+    flex: none;
+    width: 100%;
+    margin: 0;
+  }
+
+  /* no vertical a marca desce pro canto e perde peso — senão
+     ela briga com o título em vez de emoldurar */
+  .hero__mark {
+    height: min(34vh, 290px);
+    right: -22vw;
+    top: 66%;
+    opacity: 0.55;
+  }
+
+  .hero__copy { margin-bottom: clamp(8px, 3vh, 30px); }
+
+  .sub br { display: none; }
+}
+
+@media (max-width: 640px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+
+  .scroll { display: none; }
+
+  .cards {
+    grid-column: 1;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .card {
+    flex: 1 1 0;
+    width: auto;
+    min-height: 116px;
+    padding: 13px 13px 0;
+  }
+
+  .card__thumb {
+    margin-inline: -13px;
+    height: 42px;
+  }
+
+  .ttl { letter-spacing: -0.02em; }
+}
+
+/* ==========================================================================
+   MOVIMENTO REDUZIDO
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__photo {
+    animation: none;
+    transform: scale(1);
+  }
+
+  .hero__mark {
+    animation: none;
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+
+  .hd,
+  .ttl__l1,
+  .ttl__l2,
+  .sub,
+  .card,
+  .scroll {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .scroll svg { animation: none; }
+
+  .card:hover { transform: none; }
+}

@@ -499,13 +499,12 @@
     // círculo pra altura em que ela está, então ela continua exatamente
     // sobre o traçado o tempo todo.
     var bolas = [
-      { el: document.querySelector('.orb--left'),  esquerda: true,  de: 0.46, ate: 0.16 },
-      { el: document.querySelector('.orb--right'), esquerda: false, de: 0.28, ate: 0.95 }
+      { el: document.querySelector('.orb--left'),  esquerda: true,  de: 0.50, ate: 0.18 },
+      { el: document.querySelector('.orb--right'), esquerda: false, de: 0.24, ate: 0.80 }
     ].filter(function (b) { return b.el; });
 
     if (!bolas.length) return;
 
-    var faixaEquipe = document.querySelector('.crew');
     var pendente = false;
 
     function posicionar() {
@@ -532,16 +531,15 @@
         var yTela = vh * (b.de + (b.ate - b.de) * p);
         var y = window.scrollY + yTela - topoHero;
 
-        // Duas travas, as duas por baixo. Alcançado o limite, a bolinha
-        // vira posição fixa no hero e simplesmente rola embora — que é o
-        // comportamento certo quando a seção acaba.
-        //   1. o traçado: fora do intervalo vertical do círculo não existe
-        //      ponto sobre a linha, e a bolinha saltaria pro meio da tela
-        //   2. a faixa da equipe: abaixo dali ela ficaria escondida atrás
-        //      das pessoas, ou pior, espiando pelos vãos entre elas
-        var chao = cy + raio * 0.9;
-        if (faixaEquipe) chao = Math.min(chao, faixaEquipe.offsetTop - 20);
-        y = Math.max(cy - raio * 0.9, Math.min(chao, y));
+        // Trava do traçado: fora do intervalo vertical do círculo não
+        // existe ponto sobre a linha, e a bolinha saltaria pro meio da
+        // tela. No limite ela vira posição fixa no hero e rola embora.
+        //
+        // O limite cai abaixo do topo da faixa da equipe DE PROPÓSITO: é
+        // lá que a bolinha para de descer e passa a subir junto com a
+        // rolagem. Acontecendo atrás das pessoas, esse retorno não
+        // aparece — o que se vê é ela descendo e sumindo atrás da equipe.
+        y = Math.max(cy - raio * 0.9, Math.min(cy + raio * 0.9, y));
 
         // x do círculo naquela altura: cx ± √(r² − dy²)
         var dy = y - cy;

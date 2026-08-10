@@ -184,15 +184,16 @@ a { color: inherit; text-decoration: none; }
     rgba(255, 255, 255, 0) 100%);
 }
 
-/* Círculo tracejado. A trava de 100vw-120px é o que mantém os extremos
-   esquerdo e direito dentro da tela COM FOLGA pro diâmetro da bolinha:
-   elas correm sobre esse traçado, e se o arco saísse pela lateral elas
-   sairiam junto. Os 120px são os dois raios de bolinha mais respiro. */
+/* Círculo tracejado. A trava de 100vw-300px define onde ficam os pontos
+   mais extremos do arco — e são eles que decidem o quanto a bolinha chega
+   perto da borda, já que ela corre sobre esse traçado. Com 300px, o
+   extremo fica sempre a 150px da lateral: a bolinha se aproxima da borda
+   sem nunca grudar nela. */
 .deco__ring {
   position: absolute;
   left: 50%;
   top: 4%;
-  width: min(max(1420px, 118vw), calc(100vw - 120px));
+  width: min(max(1420px, 118vw), calc(100vw - 300px));
   aspect-ratio: 1;
   transform: translateX(-50%);
   border: 1px dashed var(--dash);

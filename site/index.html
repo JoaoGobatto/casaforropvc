@@ -205,6 +205,80 @@
   </ul>
 </section>
 
+<!-- ============================================================
+     SEÇÃO 3 — OBRAS
+     ATENÇÃO: títulos, bairros e metragens abaixo são FICTÍCIOS, só
+     pra apresentação. Trocar por obras reais antes de publicar.
+     As fotos entram por --foto em css/style.css (bloco "fotos das
+     obras"); ao colocar a foto, tirar a classe obra--vazia do <li>.
+     ============================================================ -->
+<section class="obras" id="obras" aria-labelledby="obras-titulo">
+
+  <span class="badge badge--sec" data-reveal>
+    <span class="badge__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/>
+        <path d="M13.6 3.5V8H18"/>
+      </svg>
+    </span>
+    Nossas obras
+  </span>
+
+  <div class="obras__topo" data-reveal>
+    <h2 class="obras__titulo" id="obras-titulo">Obras que a gente entregou</h2>
+    <a class="btn btn--dark" href="#todas-obras">
+      Ver todas as obras
+      <svg class="btn__arrow" viewBox="0 0 18 12" aria-hidden="true">
+        <path d="M0 6h16M11.5 1 17 6l-5.5 5"/>
+      </svg>
+    </a>
+  </div>
+
+  <ul class="obras__grid">
+
+    <li class="obra obra--vazia" data-reveal>
+      <a class="obra__link" href="#obra-1">
+        <span class="obra__foto" aria-hidden="true">
+          <span class="obra__vazio">foto da obra</span>
+        </span>
+        <h3 class="obra__titulo">Sala e corredor · Jardim Aurora</h3>
+        <p class="obra__meta">Entregue em 2025 · 42 m² de forro liso</p>
+      </a>
+    </li>
+
+    <li class="obra obra--vazia" data-reveal>
+      <a class="obra__link" href="#obra-2">
+        <span class="obra__foto" aria-hidden="true">
+          <span class="obra__vazio">foto da obra</span>
+        </span>
+        <h3 class="obra__titulo">Cozinha e área de serviço · Centro</h3>
+        <p class="obra__meta">Entregue em 2025 · forro com sanca de gesso</p>
+      </a>
+    </li>
+
+    <li class="obra obra--vazia" data-reveal>
+      <a class="obra__link" href="#obra-3">
+        <span class="obra__foto" aria-hidden="true">
+          <span class="obra__vazio">foto da obra</span>
+        </span>
+        <h3 class="obra__titulo">Loja de esquina · Avenida Brasil</h3>
+        <p class="obra__meta">Entregue em 2024 · 120 m² em dois dias</p>
+      </a>
+    </li>
+
+    <li class="obra obra--vazia" data-reveal>
+      <a class="obra__link" href="#obra-4">
+        <span class="obra__foto" aria-hidden="true">
+          <span class="obra__vazio">foto da obra</span>
+        </span>
+        <h3 class="obra__titulo">Varanda gourmet · Vila Nova</h3>
+        <p class="obra__meta">Entregue em 2024 · forro amadeirado</p>
+      </a>
+    </li>
+
+  </ul>
+</section>
+
 <script>
   // entrada por rolagem — vale pra faixa da equipe e pros blocos [data-reveal]
   (function () {

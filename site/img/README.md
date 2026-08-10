@@ -93,6 +93,35 @@ perde.
 
 Exportar em JPG qualidade 78-82, abaixo de 600 KB.
 
+## `obra-1.jpg` … `obra-4.jpg` — fotos da seção 3
+
+Ainda não existem. Enquanto não entrarem, os cartões mostram um
+placeholder desenhado com o rótulo "foto da obra" — não fica quadro
+quebrado.
+
+- Proporção: **16/10** (o cartão recorta pelo centro, então a foto não
+  precisa ser exata)
+- Tamanho: **1200 × 750** já cobre bem
+- JPG qualidade 78-82, abaixo de 400 KB cada
+
+### Como ligar cada foto
+
+Duas edições por obra:
+
+1. Em `css/style.css`, no bloco "fotos das obras", trocar o `none`:
+   ```css
+   .obra:nth-child(1) .obra__foto { --foto: url('../img/obra-1.jpg'); }
+   ```
+2. Em `index.html`, tirar a classe `obra--vazia` do `<li>` correspondente
+   (é ela que mostra o rótulo de placeholder).
+
+### O que fotografar
+
+O que vende forro é o **antes e depois** e o **ambiente pronto com boa
+luz**. Enquadramento com o teto ocupando boa parte do quadro, linhas
+retas, sem contraluz de janela estourando. Foto de celular resolve, desde
+que o ambiente esteja limpo e iluminado.
+
 ## Outras imagens pendentes
 
 - **Círculos decorativos** — os dois `.orb` (esquerda e direita) estão com

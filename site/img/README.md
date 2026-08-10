@@ -24,63 +24,54 @@ arquivo em uso passou por dois tratamentos:
    cores serrilha a borda do recorte e cria banda nos degradês da pele e
    do jeans.
 
-### ⚠️ O arquivo está sendo ampliado — vale reexportar
+### 🚨 A imagem precisa ser refeita maior — é o gargalo agora
 
-O arquivo em uso tem **519×594**. Depois que a equipe cresceu pra ocupar
-a tela do desktop, o elemento renderiza assim:
+O arquivo tem **519px de largura**. Desde que a equipe virou faixa de
+largura total, ela é esticada até a largura da página inteira:
 
-| Tela | Tamanho na página | Ampliação em telas retina |
-|---|---|---|
-| 1280×800 | 464×531 | 1,8× |
-| 1440×900 | 522×597 | 2,0× |
-| 1920×1080 | 620×710 | 2,4× |
+| Tela | Grupo renderizado | Ampliação | Em retina |
+|---|---|---|---|
+| 390 (celular) | 390px | 0,8× | 1,5× |
+| 1280×800 | 1280px | 2,5× | 4,9× |
+| 1440×900 | 1440px | 2,8× | 5,5× |
+| 1920×1080 | 1920px | 3,7× | 7,4× |
 
-Em monitor comum a imagem fica no tamanho certo. Em tela retina (celular,
-MacBook, monitor 4K) ela é esticada e perde definição — mais visível no
-rosto e no contorno do recorte.
+No celular está ótimo. **No desktop está visivelmente borrado** — dá pra
+ver no contorno do cabelo, na barba e na transição azul/vermelho das
+camisas. É a primeira coisa que o visitante vê, então vale resolver.
 
-**Alvo pra reexportar: 1300×1490.** Cobre o maior caso (620px) em retina
-com folga.
+Não dá pra consertar por software: a informação não existe no arquivo.
+A imagem precisa ser **gerada de novo em resolução maior**, não só
+reexportada.
 
-### Se for reexportar
+**Alvo: 2880px de largura.** Cobre 1440px em tela retina.
 
-- Formato: **PNG-24 com alfa**, já aparado no grupo
-- Tamanho: **1300×1490** (ver tabela acima)
-- A cor limitada veio do PNG-8 de origem — reexportar da fonte em 24 bits
-  melhora a nitidez
-- Peso: passar num compressor (TinyPNG, oxipng). Alvo: **abaixo de 500 KB**
-- Vale gerar também um `.webp` com alfa e servir via `<picture>`
+Como só o tronco pra cima aparece, dá pra exportar já cortado —
+**2880 × 1980** basta, sem as pernas. Se vier assim, é só ajustar duas
+linhas do `style.css` (`--crew-cut: 1` e a proporção em `--crew-h`).
 
-### Como ajustar o tamanho na tela
+Em PNG-24 esse tamanho passa fácil de 3 MB. Melhor caminho: **WebP com
+alfa**, que fica em torno de 300-600 KB com a mesma qualidade, e deixar o
+PNG só como fallback no `<picture>`.
 
-```css
---crew-w: clamp(280px, min(40vw, 58vh), 620px);
-```
-
-A **largura** manda — é ela que dá presença na tela larga. A altura sai
-sozinha da proporção do arquivo. O `min(…, 58vh)` é a trava pra que numa
-janela baixa (notebook, navegador com muitas abas) a equipe não estoure a
-altura da tela. Hoje ela ocupa **66% da altura** em qualquer desktop.
-
-**Retoque pendente:** há um resíduo claro do recorte perto da perna da
-pessoa mais à direita, visível quando a imagem renderiza grande.
-
-### Ajustes de composição
-
-Três variáveis no topo de `css/style.css` controlam tudo:
+### Como ajustar o enquadramento
 
 ```css
---crew-h:     clamp(300px, 48vh, 580px);  /* altura do recorte */
---crew-bleed: clamp(28px, 4.5vh, 62px);   /* quanto invade a faixa escura */
---strip-h:    clamp(88px, 12vh, 124px);   /* altura da faixa escura */
+--crew-span: 100vw;   /* largura do grupo. 100vw = de ponta a ponta */
+--crew-cut:  0.60;    /* fração da altura que aparece */
 ```
 
-`--crew-bleed` é o coração do efeito: é o quanto a equipe passa por cima
-da faixa. Aumentar faz a equipe "pisar" mais dentro da seção 2. Note que
-`--crew-h` também alimenta o padding de baixo do hero, então mexer nela
-reserva espaço automaticamente — não precisa ajustar mais nada.
+`--crew-span` é o que controla o tamanho das pessoas. Baixar pra `70vw`
+deixa a equipe menor e **bem mais nítida** — é a saída se você preferir
+não refazer a imagem.
 
----
+`--crew-cut` é onde as pernas são cortadas. Medi a cobertura do alfa
+linha a linha: até 63% da altura é tronco; passando disso as pernas se
+separam e o corte fica estranho. 0,60 corta logo abaixo dos braços
+cruzados.
+
+A trava `78vh` no `--crew-h` impede que numa janela baixa a faixa tome a
+tela inteira.
 
 ## `equipe-galpao.jpg` — a versão com fundo
 

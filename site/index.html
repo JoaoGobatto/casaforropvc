@@ -494,56 +494,59 @@
     if (window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    // A altura de cada bolinha é medida NA TELA, não na página: é isso que
+    // as mantém visíveis enquanto a seção 1 rola. O X vem da equação do
+    // círculo pra altura em que ela está, então ela continua exatamente
+    // sobre o traçado o tempo todo.
     var bolas = [
-      { el: document.querySelector('.orb--left'),  esquerda: true },
-      { el: document.querySelector('.orb--right'), esquerda: false }
+      { el: document.querySelector('.orb--left'),  esquerda: true,  de: 0.46, ate: 0.16 },
+      { el: document.querySelector('.orb--right'), esquerda: false, de: 0.28, ate: 0.95 }
     ].filter(function (b) { return b.el; });
 
     if (!bolas.length) return;
 
+    var faixaEquipe = document.querySelector('.crew');
     var pendente = false;
 
     function posicionar() {
       pendente = false;
 
-      // o curso é curto de propósito: como os círculos estão presos ao
-      // hero, eles saem por cima da tela conforme a rolagem avança. Se o
-      // trajeto durasse o hero inteiro, quase todo o movimento aconteceria
-      // já fora do campo de visão.
-      var curso = Math.max(1, window.innerHeight * 0.55);
-      var p = Math.min(1, Math.max(0, window.scrollY / curso));
+      var vh = window.innerHeight;
+      var p = Math.min(1, Math.max(0, window.scrollY / (vh * 0.9)));
 
       var rh = hero.getBoundingClientRect();
       var rl = linha.getBoundingClientRect();
-      // centro e raio da linha, em coordenadas do próprio hero
       var cx = rl.left - rh.left + rl.width / 2;
       var cy = rl.top - rh.top + rl.height / 2;
       var raio = rl.width / 2;
 
-      var recuo = Math.min(82, Math.max(10, window.innerWidth * 0.05));
+      // topo do hero em coordenadas da página
+      var topoHero = rh.top + window.scrollY;
 
       bolas.forEach(function (b) {
         // no vertical os círculos somem: sem largura, nada a posicionar
         var d = b.el.offsetWidth;
         if (!d) return;
 
-        // O ângulo NÃO é fixo: ele sai da posição onde a bolinha deve
-        // começar. Com ângulo fixo, o raio da linha muda com a viewport e
-        // em telas médias a bolinha ia parar fora da tela.
-        var xInicial = b.esquerda
-          ? recuo + d / 2
-          : window.innerWidth - recuo - d / 2;
+        // onde ela deve aparecer na TELA, e daí onde isso cai no hero
+        var yTela = vh * (b.de + (b.ate - b.de) * p);
+        var y = window.scrollY + yTela - topoHero;
 
-        var cos = Math.max(-1, Math.min(1, (xInicial - cx) / raio));
-        // o arco de cima é o de seno negativo, daí o 2π menos o acos
-        var inicio = 2 * Math.PI - Math.acos(cos);
+        // Duas travas, as duas por baixo. Alcançado o limite, a bolinha
+        // vira posição fixa no hero e simplesmente rola embora — que é o
+        // comportamento certo quando a seção acaba.
+        //   1. o traçado: fora do intervalo vertical do círculo não existe
+        //      ponto sobre a linha, e a bolinha saltaria pro meio da tela
+        //   2. a faixa da equipe: abaixo dali ela ficaria escondida atrás
+        //      das pessoas, ou pior, espiando pelos vãos entre elas
+        var chao = cy + raio * 0.9;
+        if (faixaEquipe) chao = Math.min(chao, faixaEquipe.offsetTop - 20);
+        y = Math.max(cy - raio * 0.9, Math.min(chao, y));
 
-        // percorrer 16° no sentido crescente sobe a da esquerda e desce a
-        // da direita — os dois lados do arco correm em sentidos opostos
-        var ang = inicio + (16 * Math.PI / 180) * p;
-
-        var x = cx + raio * Math.cos(ang);
-        var y = cy + raio * Math.sin(ang);
+        // x do círculo naquela altura: cx ± √(r² − dy²)
+        var dy = y - cy;
+        var meia = Math.sqrt(Math.max(0, raio * raio - dy * dy));
+        var x = b.esquerda ? cx - meia : cx + meia;
 
         b.el.style.left = (x - d / 2) + 'px';
         b.el.style.top = (y - b.el.offsetHeight / 2) + 'px';

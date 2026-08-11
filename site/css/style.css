@@ -366,36 +366,20 @@ a { color: inherit; text-decoration: none; }
 
 /* --- logo --- */
 
+/* A marca é o arquivo enviado pelo cliente, recortado do fundo branco.
+   Na barra entra a versão SEM a tarja da assinatura: em 50px de altura ela
+   viraria um borrão de 5px. O tamanho manda pela ALTURA porque a barra tem
+   altura fixa — a largura é consequência da proporção do arquivo. */
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   flex: none;
 }
 
-.logo__mark {
-  width: 28px;
-  flex: none;
-}
-
-.logo__mark svg {
+.logo__img {
   display: block;
-  width: 100%;
-  height: auto;
-  fill: var(--navy);
-}
-
-.logo__mark .logo__line {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 8;
-}
-
-.logo__type {
-  font-size: clamp(17px, 1.35vw, 20px);
-  font-weight: 800;
-  letter-spacing: -0.015em;
-  white-space: nowrap;
+  height: clamp(46px, 4vw, 56px);
+  width: auto;
 }
 
 /* --- menu --- */
@@ -1546,8 +1530,15 @@ a { color: inherit; text-decoration: none; }
 
 .rodape__marca { max-width: 46ch; }
 
-.logo--rodape .logo__mark svg { fill: var(--white); }
-.logo--rodape .logo__type { color: var(--white); }
+/* No escuro a marca vira negativo: o azul some no fundo. brightness(0)
+   achata tudo em preto e invert(1) devolve em branco — as contraformas das
+   letras continuam vazadas, então a tarja da assinatura fica branca com o
+   texto lendo o próprio rodapé por trás. Sai o vermelho do FORRO; é o
+   preço de uma marca que só existe em versão colorida. */
+.logo--rodape .logo__img {
+  height: clamp(78px, 8vw, 104px);
+  filter: brightness(0) invert(1);
+}
 
 .rodape__tag {
   margin: 14px 0 0;

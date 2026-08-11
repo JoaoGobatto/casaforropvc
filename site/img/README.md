@@ -2,6 +2,54 @@
 
 ---
 
+## `logo.webp` e `logo-barra.webp` — a marca ✅ em uso
+
+O arquivo veio do cliente com **fundo branco chapado, sem alfa**
+(`ChatGPT Image 10 de ago. de 2026, 23_17_38.png`, 1572 × 1001, RGB).
+
+O recorte aqui foi por **limiar**, não por preenchimento a partir das
+bordas: o alfa sai da distância ao branco (`255 − menor canal`), com a
+cor "despré-multiplicada" depois pra borda não ficar leitosa. É o
+caminho certo pra esse arquivo porque as contraformas das letras — o
+miolo do `A`, do `o`, do `P`, do `R` — não tocam a borda, e num
+preenchimento por borda elas continuariam brancas e opacas.
+
+### São dois arquivos porque são dois tamanhos de leitura
+
+| Arquivo | Onde | Por quê |
+|---|---|---|
+| `logo-barra.webp` (700 × 403) | barra do topo | **sem a tarja da assinatura** |
+| `logo.webp` (880 × 573) | rodapé | completo, com a assinatura |
+
+Na barra a marca tem ~50px de altura. A tarja "Inovar, mudar, renovar…"
+ficaria com 5px e viraria um borrão cinza — então ela sai. O corte não é
+uma máscara: as linhas 700–800 do master foram **removidas** e a base da
+casa colada de volta. Dá certo porque naquela faixa só existem a tarja e
+a parede esquerda, que é uma barra vertical uniforme.
+
+### No rodapé a marca é negativo, e isso é de propósito
+
+`filter: brightness(0) invert(1)` achata tudo em preto e devolve em
+branco. Como as contraformas continuam vazadas, a tarja da assinatura
+vira branca com o texto lendo o fundo escuro por trás — legível. O que
+se perde é o vermelho do `FORRO`; é o preço de uma marca que só existe
+em versão colorida.
+
+Se um dia vier uma versão clara de verdade (ou o vetor), é só trocar o
+`src` e tirar o `filter` da regra `.logo--rodape .logo__img`.
+
+### Atenção à paleta
+
+O logo usa **azul-marinho `#041F44` e vermelho `#A8101A`**. O azul é bem
+mais escuro que o `--navy #172D68` da identidade, e o vermelho **não
+existe na paleta** que foi passada (azul, marrom, dourado). O site
+continua na paleta da identidade — quem manda nessa decisão é você.
+
+Masters sem perda: `logo.png` e `logo-barra.png` (guardados, não
+servidos).
+
+---
+
 ## `equipe-faixa.webp` — a faixa da seção 1 ✅ em uso
 
 **1198 × 687, WebP com alfa, 92 KB.** É o arquivo que o CSS carrega.

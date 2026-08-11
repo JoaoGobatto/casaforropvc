@@ -50,15 +50,6 @@
       </nav>
 
       <div class="bar__right">
-        <a class="cart" href="#loja" aria-label="Carrinho, 1 item">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M2.5 3.5h2.6l2.3 10.4h9.4l2.2-7.6H6.4"/>
-            <circle cx="9.4" cy="19" r="1.5"/>
-            <circle cx="16.6" cy="19" r="1.5"/>
-          </svg>
-          <span class="cart__badge">1</span>
-        </a>
-
         <a class="btn btn--dark" href="#contato">
           Fale conosco
           <svg class="btn__arrow" viewBox="0 0 18 12" aria-hidden="true">
@@ -124,7 +115,56 @@
 </section>
 
 <!-- ============================================================
-     SEÇÃO 2 — POR QUE A CASA DO FORRO
+     SEÇÃO 2 — SOBRE NÓS
+     ============================================================ -->
+<section class="sobre" id="empresa" aria-labelledby="sobre-titulo">
+  <div class="sobre__caixa">
+
+    <figure class="sobre__foto" data-reveal>
+      <span class="sobre__vazio">foto do galpão</span>
+      <span class="sobre__amostra" aria-hidden="true"></span>
+    </figure>
+
+    <div class="sobre__texto">
+      <span class="badge badge--sec" data-reveal>
+        <span class="badge__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 20V10.5L12 4l8 6.5V20"/>
+            <path d="M9.5 20v-5.5h5V20"/>
+          </svg>
+        </span>
+        Sobre nós
+      </span>
+
+      <h2 class="sobre__titulo" id="sobre-titulo" data-reveal>
+        Do estoque à instalação, tudo na mesma casa
+      </h2>
+
+      <p class="sobre__p" data-reveal>
+        Trabalhamos com o material em estoque no nosso galpão e montagem
+        com equipe própria. Não existe intermediário entre o que você
+        compra e quem instala.
+      </p>
+
+      <p class="sobre__p" data-reveal>
+        Isso muda a obra: o prazo não depende de fornecedor, o preço não
+        carrega comissão de terceiro, e quem responde pelo acabamento é
+        quem colocou a mão nele.
+      </p>
+
+      <a class="btn btn--dark" href="#obras" data-reveal>
+        Ver as obras
+        <svg class="btn__arrow" viewBox="0 0 18 12" aria-hidden="true">
+          <path d="M0 6h16M11.5 1 17 6l-5.5 5"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SEÇÃO 3 — POR QUE A CASA DO FORRO
      ============================================================ -->
 <section class="motivos" id="proxima" aria-labelledby="motivos-titulo">
 
@@ -206,7 +246,7 @@
 </section>
 
 <!-- ============================================================
-     SEÇÃO 3 — OBRAS
+     SEÇÃO 4 — OBRAS
      ATENÇÃO: títulos, bairros e metragens abaixo são FICTÍCIOS, só
      pra apresentação. Trocar por obras reais antes de publicar.
      As fotos entram por --foto em css/style.css (bloco "fotos das
@@ -280,7 +320,7 @@
 </section>
 
 <!-- ============================================================
-     SEÇÃO 4 — DEPOIMENTOS
+     SEÇÃO 5 — DEPOIMENTOS
      ⚠️ OS TRÊS DEPOIMENTOS ABAIXO SÃO INVENTADOS. Existem só pra
      mostrar o formato. Avaliação falsa é propaganda enganosa —
      trocar por avaliações reais do Google antes de publicar.
@@ -374,7 +414,7 @@
 </section>
 
 <!-- ============================================================
-     SEÇÃO 5 — CHAMADA FINAL
+     SEÇÃO 6 — CHAMADA FINAL
      ============================================================ -->
 <section class="cta cta--vazia" aria-labelledby="cta-titulo">
   <div class="cta__texto">

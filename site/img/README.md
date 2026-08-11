@@ -93,7 +93,26 @@ perde.
 
 Exportar em JPG qualidade 78-82, abaixo de 600 KB.
 
-## `obra-1.jpg` … `obra-4.jpg` — fotos da seção 3
+## `galpao.jpg` — foto da seção "Sobre nós"
+
+É aqui que a foto do galpão entra — a versão COM fundo da imagem da
+equipe, ou qualquer foto boa do estoque. O argumento da seção é
+justamente o material em casa, então prateleira cheia é o assunto.
+
+- Proporção: **4/3** no desktop, 16/10 no vertical (o quadro recorta pelo
+  centro, então não precisa ser exata)
+- Tamanho: **1400 × 1050** basta
+- JPG qualidade 78-82, abaixo de 450 KB
+
+Pra ligar, uma linha em `css/style.css`, na regra `.sobre`:
+
+```css
+.sobre { --sobre-foto: url('../img/galpao.jpg'); }
+```
+
+E tirar o `<span class="sobre__vazio">` do HTML.
+
+## `obra-1.jpg` … `obra-4.jpg` — fotos da seção 4
 
 Ainda não existem. Enquanto não entrarem, os cartões mostram um
 placeholder desenhado com o rótulo "foto da obra" — não fica quadro

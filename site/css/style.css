@@ -305,45 +305,6 @@ a { color: inherit; text-decoration: none; }
   flex: none;
 }
 
-.cart {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  color: var(--ink);
-  transition: color 0.22s ease;
-}
-
-.cart:hover { color: var(--accent); }
-
-.cart svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.cart__badge {
-  position: absolute;
-  top: -1px;
-  right: -3px;
-  min-width: 15px;
-  height: 15px;
-  padding: 0 4px;
-  border-radius: 999px;
-  background: var(--gold);
-  color: var(--ink);
-  font-size: 9.5px;
-  font-weight: 800;
-  line-height: 15px;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
 /* --- botão preto --- */
 
 .btn {
@@ -636,7 +597,117 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ==========================================================================
-   SEÇÃO 2 — POR QUE A CASA DO FORRO
+   SEÇÃO 2 — SOBRE NÓS
+   Fundo branco: separa do cinza do hero e do bloco de motivos logo
+   abaixo, sem precisar de mais um painel escuro.
+   ========================================================================== */
+
+.sobre {
+  --sobre-foto: none;   /* trocar por url('../img/galpao.jpg') */
+
+  padding: clamp(56px, 9vh, 116px) var(--gutter);
+  background: var(--white);
+}
+
+.sobre__caixa {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 4.5vw, 80px);
+  max-width: 1560px;
+  margin: 0 auto;
+}
+
+/* --- foto --- */
+
+.sobre__foto {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  background-image: var(--sobre-foto),
+    repeating-linear-gradient(115deg,
+      rgba(255, 255, 255, 0.5) 0 1px,
+      transparent 1px 15px),
+    linear-gradient(150deg, #DFE4EE 0%, #C4CCDB 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.sobre__vazio {
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* amostra de forro encostada na foto, como uma peça deixada ali.
+   É o mesmo material desenhado que aparece no hero e na chamada final. */
+.sobre__amostra {
+  position: absolute;
+  left: clamp(-14px, -1vw, -8px);
+  bottom: clamp(-16px, -1.4vw, -10px);
+  width: clamp(76px, 9vw, 124px);
+  aspect-ratio: 1;
+  border: 4px solid var(--white);
+  border-radius: 14px;
+  background-image: var(--madeira-img);
+  background-size: var(--madeira-size);
+  background-blend-mode: var(--madeira-blend);
+  box-shadow: 0 12px 26px rgba(17, 17, 17, 0.16);
+}
+
+/* --- texto --- */
+
+.sobre__texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(14px, 1.8vh, 22px);
+}
+
+/* aqui o selo acompanha a coluna, não a borda da página */
+.sobre__texto .badge--sec { margin: 0; }
+
+.sobre__titulo {
+  margin: 0;
+  font-family: 'Anton', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.9vw, 2.7rem);
+  line-height: 1.08;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.sobre__p {
+  max-width: 52ch;
+  margin: 0;
+  font-size: clamp(0.86rem, 0.96vw, 0.95rem);
+  font-weight: 500;
+  line-height: 1.68;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.sobre__texto .btn { margin-top: clamp(6px, 1vh, 12px); }
+
+@media (max-width: 860px) {
+  .sobre__caixa { grid-template-columns: minmax(0, 1fr); }
+  .sobre__foto { aspect-ratio: 16 / 10; }
+  .sobre__amostra { left: auto; right: 14px; bottom: -14px; }
+}
+
+/* ==========================================================================
+   SEÇÃO 3 — POR QUE A CASA DO FORRO
    Selo à esquerda + quatro cartões soltos. No hover o cartão inverte
    pra escuro, como na referência.
    ========================================================================== */
@@ -815,7 +886,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ==========================================================================
-   SEÇÃO 3 — OBRAS
+   SEÇÃO 4 — OBRAS
    Selo, título com botão à direita e cartões de foto em duas colunas.
    ========================================================================== */
 
@@ -961,7 +1032,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ==========================================================================
-   SEÇÃO 4 — DEPOIMENTOS
+   SEÇÃO 5 — DEPOIMENTOS
    Painel escuro em azul institucional. Quebra o ritmo claro das três
    primeiras seções e devolve o dourado, que até aqui só aparecia em
    detalhes minúsculos.
@@ -1222,7 +1293,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ==========================================================================
-   SEÇÃO 5 — CHAMADA FINAL
+   SEÇÃO 6 — CHAMADA FINAL
    Texto à esquerda alinhado com o container, foto sangrando na direita.
    ========================================================================== */
 
@@ -1529,13 +1600,9 @@ a { color: inherit; text-decoration: none; }
 
   .bar__right .btn { display: none; }
 
-  /* alvos de toque: burger e carrinho subiam a 40px e 30px */
+  /* alvo de toque: o burger subia a 40px */
   .burger { width: 44px; height: 44px; }
-  .cart   { width: 44px; height: 44px; }
   .bar__right { gap: 12px; }
-
-  /* a caixa do carrinho cresceu — reancora o badge no glifo */
-  .cart__badge { top: 4px; right: 4px; }
 
   .orb { width: clamp(60px, 9vw, 84px); }
   .orb--left { top: 38svh; }
@@ -1618,7 +1685,6 @@ a { color: inherit; text-decoration: none; }
   .btn,
   .btn__arrow,
   .burger span,
-  .cart,
   .menu__item,
   .tel { transition: none; }
 

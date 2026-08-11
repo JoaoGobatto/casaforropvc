@@ -22,6 +22,7 @@
   <div class="deco" aria-hidden="true">
     <div class="telhado">
       <div class="painel" id="painel">
+        <span class="escurece"></span>
         <span class="derrame"></span>
         <span class="reflexo"></span>
         <span class="led"></span>
@@ -531,8 +532,13 @@
     var painel = document.getElementById('painel');
     if (!painel) return;
 
+    var hero = document.getElementById('hero');
     var led = painel.querySelector('.led');
     var derrame = painel.querySelector('.derrame');
+    var escurece = painel.querySelector('.escurece');
+
+    // marca que o JS assumiu o painel: é o que autoriza o texto claro
+    if (hero) hero.classList.add('is-js');
 
     var TONS = [['#C58B4E','#A96F36','#8A5628'],['#B87F44','#9C6531','#7E4E24'],
                 ['#CE9457','#B0773B','#8F5B2A'],['#B57C41','#98622F','#7A4B22'],
@@ -543,15 +549,24 @@
     var ripas = [];
 
     for (var i = 0; i < total; i++) {
-      var r = document.createElement('span'), t = TONS[i % TONS.length];
+      var t = TONS[i % TONS.length];
+      // a peça carrega o próprio vão: por isso o elemento tem a largura do
+      // passo, com a ripa à esquerda e o recesso escuro à direita
+      var r = document.createElement('span');
       r.className = 'ripa';
       r.style.left = (i * passo) + 'px';
-      r.style.width = LARG + 'px';
-      r.style.setProperty('--ta', t[0]);
-      r.style.setProperty('--tb', t[1]);
-      r.style.setProperty('--tc', t[2]);
+      r.style.width = passo + 'px';
       // gira em torno da própria borda esquerda, como peça encostando na parede
       r.style.transformOrigin = '0% 50%';
+
+      var peca = document.createElement('i');
+      peca.className = 'ripa__peca';
+      peca.style.width = LARG + 'px';
+      peca.style.setProperty('--ta', t[0]);
+      peca.style.setProperty('--tb', t[1]);
+      peca.style.setProperty('--tc', t[2]);
+
+      r.appendChild(peca);
       painel.insertBefore(r, painel.firstChild);
       ripas.push(r);
     }
@@ -562,6 +577,7 @@
     if (semMovimento || !painel.animate) {
       led.style.transform = 'scaleX(1)';
       derrame.style.opacity = 1;
+      escurece.style.opacity = 1;
       return;
     }
 
@@ -571,7 +587,7 @@
 
     // 2 · as ripas encaixam uma a uma, da esquerda pra direita. O leve
     //     exagero no fim da curva é o que lê como "encaixou"
-    var ATRASO = 380, INTERVALO = 26, DURACAO = 460;
+    var ATRASO = 240, INTERVALO = 17, DURACAO = 420;
     ripas.forEach(function (r, i) {
       r.animate([
         { transform: 'perspective(900px) rotateY(-74deg)', opacity: 0 },
@@ -581,6 +597,11 @@
     });
 
     var fim = ATRASO + total * INTERVALO + DURACAO;
+
+    // o escurecido do miolo acompanha a montagem: com a parede ainda nua
+    // ele mancharia o branco sem motivo
+    escurece.animate([{ opacity: 0 }, { opacity: 1 }],
+      { duration: fim * 0.8, delay: ATRASO, easing: 'linear', fill: 'both' });
 
     // 3 · com o painel pronto, a luz acende: é o fim da obra
     led.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],

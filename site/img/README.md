@@ -168,13 +168,12 @@ ler como teto e não como piso).
 
 ## Outras imagens pendentes
 
-- **Círculos decorativos** — os dois `.orb` do hero mostram amostras
-  desenhadas em CSS: madeira na esquerda (anel dourado) e forro branco na
-  direita (anel azul). Fotos reais entram pelas variáveis `--orb-left` e
-  `--orb-right`, no topo do `style.css` — a foto cobre a textura, sem
-  precisar mexer em mais nada.
+- **O painel ripado do hero não usa imagem.** Ripa, vão, veio da madeira
+  e fita de LED são todos desenhados em CSS, e a montagem na abertura é
+  feita por JS. Não há foto pra subir ali.
 
-  A textura de madeira mora nas variáveis `--madeira-img` / `--branco-img`
-  e é a mesma usada na peça da chamada final: mexeu lá, mudou nos dois
+  Os dois círculos decorativos que existiam no hero saíram — o painel
+  ocupa o lugar deles. A textura de madeira (`--madeira-img`) continua
+  viva na amostra do "Sobre nós" e na peça da chamada final
 - **Logo real** (`logo.png` / `logo.svg`) — o header usa um lockup
   provisório desenhado em SVG

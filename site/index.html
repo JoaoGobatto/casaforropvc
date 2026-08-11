@@ -18,10 +18,15 @@
      ============================================================ -->
 <section class="hero" id="hero">
 
-  <!-- fundo: círculo claro + círculo tracejado -->
+  <!-- fundo: painel ripado em empena, montado na abertura da página -->
   <div class="deco" aria-hidden="true">
-    <span class="deco__glow"></span>
-    <span class="deco__ring"></span>
+    <div class="telhado">
+      <div class="painel" id="painel">
+        <span class="derrame"></span>
+        <span class="reflexo"></span>
+        <span class="led"></span>
+      </div>
+    </div>
   </div>
 
   <!-- ---------- BARRA FLUTUANTE ---------- -->
@@ -95,7 +100,7 @@
         (00) 0000-0000
       </a>
 
-      <a class="btn btn--dark" href="#orcamento">
+      <a class="btn btn--gold" href="#orcamento">
         Peça um orçamento
         <svg class="btn__arrow" viewBox="0 0 18 12" aria-hidden="true">
           <path d="M0 6h16M11.5 1 17 6l-5.5 5"/>
@@ -104,10 +109,6 @@
     </div>
 
   </main>
-
-  <!-- círculos com foto de produto -->
-  <figure class="orb orb--left" aria-hidden="true"><span class="orb__img"></span></figure>
-  <figure class="orb orb--right" aria-hidden="true"><span class="orb__img"></span></figure>
 
   <!-- faixa da equipe: fecha a seção 1, dissolvendo na base -->
   <div class="crew" role="img" aria-label="Equipe da Casa do Forro PVC"></div>
@@ -525,83 +526,68 @@
 </footer>
 
 <script>
-  // os dois círculos deslizam SOBRE a linha tracejada conforme a rolagem
+  // ---- montagem do painel ripado, na abertura da página ----
   (function () {
-    var hero = document.querySelector('.hero');
-    var linha = document.querySelector('.deco__ring');
-    if (!hero || !linha) return;
+    var painel = document.getElementById('painel');
+    if (!painel) return;
 
-    if (window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var led = painel.querySelector('.led');
+    var derrame = painel.querySelector('.derrame');
 
-    // A altura de cada bolinha é medida NA TELA, não na página: é isso que
-    // as mantém visíveis enquanto a seção 1 rola. O X vem da equação do
-    // círculo pra altura em que ela está, então ela continua exatamente
-    // sobre o traçado o tempo todo.
-    var bolas = [
-      { el: document.querySelector('.orb--left'),  esquerda: true,  de: 0.50, ate: 0.18 },
-      { el: document.querySelector('.orb--right'), esquerda: false, de: 0.24, ate: 0.80 }
-    ].filter(function (b) { return b.el; });
+    var TONS = [['#C58B4E','#A96F36','#8A5628'],['#B87F44','#9C6531','#7E4E24'],
+                ['#CE9457','#B0773B','#8F5B2A'],['#B57C41','#98622F','#7A4B22'],
+                ['#C08749','#A26C34','#845326']];
 
-    if (!bolas.length) return;
+    var LARG = 22, VAO = 9, passo = LARG + VAO;
+    var total = Math.ceil(painel.offsetWidth / passo) + 2;
+    var ripas = [];
 
-    var pendente = false;
-
-    function posicionar() {
-      pendente = false;
-
-      var vh = window.innerHeight;
-      var p = Math.min(1, Math.max(0, window.scrollY / (vh * 0.9)));
-
-      var rh = hero.getBoundingClientRect();
-      var rl = linha.getBoundingClientRect();
-      var cx = rl.left - rh.left + rl.width / 2;
-      var cy = rl.top - rh.top + rl.height / 2;
-      var raio = rl.width / 2;
-
-      // topo do hero em coordenadas da página
-      var topoHero = rh.top + window.scrollY;
-
-      bolas.forEach(function (b) {
-        // no vertical os círculos somem: sem largura, nada a posicionar
-        var d = b.el.offsetWidth;
-        if (!d) return;
-
-        // onde ela deve aparecer na TELA, e daí onde isso cai no hero
-        var yTela = vh * (b.de + (b.ate - b.de) * p);
-        var y = window.scrollY + yTela - topoHero;
-
-        // Trava do traçado: fora do intervalo vertical do círculo não
-        // existe ponto sobre a linha, e a bolinha saltaria pro meio da
-        // tela. No limite ela vira posição fixa no hero e rola embora.
-        //
-        // O limite cai abaixo do topo da faixa da equipe DE PROPÓSITO: é
-        // lá que a bolinha para de descer e passa a subir junto com a
-        // rolagem. Acontecendo atrás das pessoas, esse retorno não
-        // aparece — o que se vê é ela descendo e sumindo atrás da equipe.
-        y = Math.max(cy - raio * 0.9, Math.min(cy + raio * 0.9, y));
-
-        // x do círculo naquela altura: cx ± √(r² − dy²)
-        var dy = y - cy;
-        var meia = Math.sqrt(Math.max(0, raio * raio - dy * dy));
-        var x = b.esquerda ? cx - meia : cx + meia;
-
-        b.el.style.left = (x - d / 2) + 'px';
-        b.el.style.top = (y - b.el.offsetHeight / 2) + 'px';
-        b.el.style.right = 'auto';
-        b.el.style.bottom = 'auto';
-      });
+    for (var i = 0; i < total; i++) {
+      var r = document.createElement('span'), t = TONS[i % TONS.length];
+      r.className = 'ripa';
+      r.style.left = (i * passo) + 'px';
+      r.style.width = LARG + 'px';
+      r.style.setProperty('--ta', t[0]);
+      r.style.setProperty('--tb', t[1]);
+      r.style.setProperty('--tc', t[2]);
+      // gira em torno da própria borda esquerda, como peça encostando na parede
+      r.style.transformOrigin = '0% 50%';
+      painel.insertBefore(r, painel.firstChild);
+      ripas.push(r);
     }
 
-    function agendar() {
-      if (pendente) return;
-      pendente = true;
-      requestAnimationFrame(posicionar);
+    var semMovimento = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (semMovimento || !painel.animate) {
+      led.style.transform = 'scaleX(1)';
+      derrame.style.opacity = 1;
+      return;
     }
 
-    posicionar();
-    window.addEventListener('scroll', agendar, { passive: true });
-    window.addEventListener('resize', agendar);
+    // 1 · a estrutura aparece — o vão escuro antes de qualquer acabamento
+    painel.animate([{ opacity: 0 }, { opacity: 1 }],
+      { duration: 420, easing: 'ease-out', fill: 'both' });
+
+    // 2 · as ripas encaixam uma a uma, da esquerda pra direita. O leve
+    //     exagero no fim da curva é o que lê como "encaixou"
+    var ATRASO = 380, INTERVALO = 26, DURACAO = 460;
+    ripas.forEach(function (r, i) {
+      r.animate([
+        { transform: 'perspective(900px) rotateY(-74deg)', opacity: 0 },
+        { transform: 'perspective(900px) rotateY(0deg)', opacity: 1 }
+      ], { duration: DURACAO, delay: ATRASO + i * INTERVALO,
+           easing: 'cubic-bezier(.2,.85,.3,1.06)', fill: 'both' });
+    });
+
+    var fim = ATRASO + total * INTERVALO + DURACAO;
+
+    // 3 · com o painel pronto, a luz acende: é o fim da obra
+    led.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+      { duration: 950, delay: fim + 140, easing: 'cubic-bezier(.2,.7,.25,1)', fill: 'both' });
+
+    derrame.animate([{ opacity: 0 }, { opacity: 1 }],
+      { duration: 900, delay: fim + 300, easing: 'ease-out', fill: 'both' });
   })();
 
   // entrada por rolagem — vale pra faixa da equipe e pros blocos [data-reveal]

@@ -24,10 +24,6 @@
   --gutter: clamp(16px, 3vw, 40px);
   --bar-h: 74px;
 
-  /* slots de imagem dos dois círculos decorativos */
-  --orb-left:  none;
-  --orb-right: none;
-
   /* ---- textura de madeira -------------------------------------------------
      Quatro camadas empilhadas, porque uma só sempre parece papel de parede:
 
@@ -71,6 +67,9 @@
 
   --branco-size: auto, 300px 300px, auto, auto;
   --branco-blend: normal, soft-light, normal, normal;
+
+  /* veio esticado no eixo Y, pras ripas verticais do painel do hero */
+  --grao-ripa: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='420'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5 0.007' numOctaves='4' seed='5'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='420' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
 
 
   /* Faixa da equipe — arquivo já vem cortado no tronco, 1198x687.
@@ -144,10 +143,7 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   isolation: isolate;
   z-index: 0;
-  /* voltou a recortar: desde que a faixa preta saiu, o recorte da equipe
-     não precisa mais vazar pra fora do hero. E agora faz falta — as
-     bolinhas correm pelo arco e passariam da borda direita, ampliando a
-     área rolável da página. */
+  /* recorta o painel ripado e a faixa da equipe na borda da seção */
   overflow: hidden;
   /* a primeira tela e o conteudo cabem em 100svh; a faixa da equipe
      comeca exatamente na dobra, entao so aparece depois da rolagem */
@@ -169,35 +165,124 @@ a { color: inherit; text-decoration: none; }
   pointer-events: none;
 }
 
-/* círculo claro atrás do conteúdo */
-.deco__glow {
+/* --- painel ripado em empena -----------------------------------------------
+   Ripa, vão escuro e fita de LED, tudo desenhado. O recorte em empena é a
+   silhueta da casinha do logo, e corta as ripas no ângulo do telhado —
+   como num oitão de verdade.
+   -------------------------------------------------------------------- */
+
+/* a inclinação da empena é variável: numa tela estreita o painel fica
+   alto e magro, e um telhado de 27% vira um bico que come o conteúdo */
+.telhado {
+  --empena: 27%;
+
   position: absolute;
   left: 50%;
-  top: 8%;
-  width: max(1180px, 82vw);
-  aspect-ratio: 1;
+  top: clamp(56px, 7svh, 104px);
+  width: min(880px, 66vw);
+  height: min(78svh, 780px);
   transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(closest-side,
-    var(--white) 0%,
-    var(--white) 76%,
-    rgba(255, 255, 255, 0) 100%);
+  /* a sombra vem do filtro, não do box-shadow: o clip-path recortaria a
+     sombra junto com o resto e ela sumiria */
+  filter: drop-shadow(0 34px 60px rgba(34, 21, 10, 0.30));
 }
 
-/* Círculo tracejado. A trava de 100vw-300px define onde ficam os pontos
-   mais extremos do arco — e são eles que decidem o quanto a bolinha chega
-   perto da borda, já que ela corre sobre esse traçado. Com 300px, o
-   extremo fica sempre a 150px da lateral: a bolinha se aproxima da borda
-   sem nunca grudar nela. */
-.deco__ring {
+.painel {
   position: absolute;
-  left: 50%;
-  top: 4%;
-  width: min(max(1420px, 118vw), calc(100vw - 300px));
-  aspect-ratio: 1;
-  transform: translateX(-50%);
-  border: 1px dashed var(--dash);
-  border-radius: 50%;
+  inset: 0;
+  overflow: hidden;
+  background: #22150A;
+  clip-path: polygon(50% 0%, 100% var(--empena), 100% 100%, 0% 100%, 0% var(--empena));
+}
+
+/* o fundo do vão entre as ripas: é ele que dá profundidade */
+.painel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #2E1E10 0%, #180F07 100%);
+}
+
+/* escurecido atrás do texto, pra garantir contraste do branco */
+.painel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 60% at 50% 58%,
+    rgba(14, 8, 3, 0.60) 0%, rgba(14, 8, 3, 0.28) 58%, transparent 100%);
+}
+
+.ripa {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background:
+    linear-gradient(90deg,
+      rgba(255, 226, 178, 0.42) 0 7%,
+      rgba(255, 214, 160, 0.10) 7% 20%,
+      rgba(0, 0, 0, 0.05) 52%,
+      rgba(0, 0, 0, 0.22) 84%,
+      rgba(0, 0, 0, 0.42) 100%),
+    var(--grao-ripa),
+    linear-gradient(180deg, var(--ta) 0%, var(--tb) 55%, var(--tc) 100%);
+  background-size: auto, 300px 420px, auto;
+  background-blend-mode: normal, overlay, normal;
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.45);
+}
+
+/* a fita de LED cai na linha onde o telhado encontra a parede */
+.led {
+  position: absolute;
+  z-index: 2;
+  left: 9%;
+  right: 9%;
+  /* logo abaixo da linha onde o telhado encontra a parede */
+  top: calc(var(--empena) + 9%);
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(255, 214, 150, 0), #FFE0AE 12%,
+                                     #FFF1D8 50%, #FFE0AE 88%, rgba(255, 214, 150, 0));
+  box-shadow: 0 0 22px 6px rgba(255, 196, 120, 0.55),
+              0 0 60px 18px rgba(255, 170, 80, 0.28);
+  transform: scaleX(0);
+  transform-origin: 50% 50%;
+}
+
+/* o derrame de luz do LED nas ripas logo abaixo */
+.derrame {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: calc(var(--empena) + 9%);
+  height: 38%;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: linear-gradient(180deg, rgba(255, 196, 120, 0.34) 0%,
+                                      rgba(255, 170, 80, 0.10) 40%, transparent 100%);
+}
+
+/* brilho lento atravessando as ripas */
+.reflexo {
+  position: absolute;
+  z-index: 2;
+  inset: 0 -40%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: linear-gradient(100deg, transparent 38%,
+                              rgba(255, 236, 205, 0.20) 50%, transparent 62%);
+  animation: passa 16s linear 4.5s infinite;
+}
+
+@keyframes passa {
+  from { transform: translateX(-30%); }
+  to   { transform: translateX(30%); }
+}
+
+@media (max-width: 900px) {
+  .telhado { --empena: 15%; width: 92vw; height: min(74svh, 640px); }
+  .led { left: 6%; right: 6%; }
 }
 
 /* ==========================================================================
@@ -442,7 +527,8 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.13;
   letter-spacing: 0.005em;
   text-transform: uppercase;
-  color: var(--ink);
+  /* branco: o título agora fica sobre a madeira do painel */
+  color: var(--white);
 }
 
 .ttl__line { white-space: nowrap; }
@@ -452,9 +538,10 @@ a { color: inherit; text-decoration: none; }
 .ttl__line:nth-child(1) { --d: 0.14s; }
 .ttl__line:nth-child(2) { --d: 0.22s; }
 
+/* sobre a madeira o azul da marca some; o destaque vira tom de luz */
 .ttl em {
   font-style: normal;
-  color: var(--accent);
+  color: #FFD79B;
 }
 
 /* --- linha de apoio --- */
@@ -465,7 +552,7 @@ a { color: inherit; text-decoration: none; }
   font-size: clamp(0.9rem, 1.05vw, 1rem);
   font-weight: 500;
   line-height: 1.68;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.82);
   text-wrap: pretty;
   animation: rise 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s both;
 }
@@ -498,68 +585,14 @@ a { color: inherit; text-decoration: none; }
   transition: color 0.22s ease;
 }
 
-.tel:hover { color: var(--accent); }
+.tel { color: var(--white); }
+.tel:hover { color: var(--gold); }
 
 .tel__icon {
   width: 19px;
   height: 19px;
   flex: none;
-  fill: var(--accent);
-}
-
-/* ==========================================================================
-   CÍRCULOS DECORATIVOS
-   ========================================================================== */
-
-.orb {
-  position: absolute;
-  z-index: 3;
-  margin: 0;
-  width: clamp(84px, 6.6vw, 100px);
-  aspect-ratio: 1;
-  padding: 4px;
-  border-radius: 50%;
-  border: 1px solid var(--accent);
-  animation: pop 0.7s cubic-bezier(0.34, 1.4, 0.5, 1) 0.5s both;
-}
-
-.orb__img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
-/* Ancorados na PRIMEIRA TELA (svh), não no hero: o hero ficou muito mais
-   alto pra empurrar a faixa da equipe pra baixo da dobra, e uma
-   porcentagem daquilo jogaria os círculos pro meio do nada.
-   Enquanto não há foto, o padrão de ripas segura o lugar. */
-.orb--left {
-  left: clamp(10px, 5vw, 82px);
-  top: 44svh;
-  /* madeira pede o anel dourado; o forro branco fica com o azul */
-  border-color: var(--gold);
-}
-
-.orb--left .orb__img {
-  background-image: var(--orb-left), var(--madeira-img);
-  background-size: cover, var(--madeira-size);
-  background-blend-mode: normal, var(--madeira-blend);
-}
-
-.orb--right {
-  right: clamp(10px, 5vw, 82px);
-  top: 76svh;
-  border-color: var(--accent);
-}
-
-.orb--right .orb__img {
-  background-image: var(--orb-right), var(--branco-img);
-  background-size: cover, var(--branco-size);
-  background-blend-mode: normal, var(--branco-blend);
+  fill: var(--gold);
 }
 
 /* ==========================================================================
@@ -1604,9 +1637,6 @@ a { color: inherit; text-decoration: none; }
   .burger { width: 44px; height: 44px; }
   .bar__right { gap: 12px; }
 
-  .orb { width: clamp(60px, 9vw, 84px); }
-  .orb--left { top: 38svh; }
-  .orb--right { top: 72svh; }
 }
 
 @media (max-width: 640px) {
@@ -1647,10 +1677,7 @@ a { color: inherit; text-decoration: none; }
   /* abaixo de 640px o texto ocupa a largura toda menos os gutters de
      16px: não sobra faixa livre pros círculos sem invadir a coluna —
      medido, eles caíam por baixo do parágrafo. Somem no vertical. */
-  .orb { display: none; }
 
-  .deco__glow { top: 4%; width: 170vw; }
-  .deco__ring { top: 2%; width: 196vw; }
 }
 
 /* ==========================================================================
@@ -1661,8 +1688,7 @@ a { color: inherit; text-decoration: none; }
   .badge,
   .ttl__line,
   .lead,
-  .actions,
-  .orb {
+  .actions {
     animation: none;
     opacity: 1;
     transform: none;

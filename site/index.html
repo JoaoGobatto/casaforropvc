@@ -587,13 +587,18 @@
 
     // 2 · as ripas encaixam uma a uma, da esquerda pra direita. O leve
     //     exagero no fim da curva é o que lê como "encaixou"
-    var ATRASO = 240, INTERVALO = 17, DURACAO = 420;
+    // O ritmo é o efeito. Rápido demais, a montagem some — a página
+    // parece só aparecer pronta. Estes números foram calibrados olhando
+    // quadro a quadro: dá pra acompanhar peça por peça sem virar espera.
+    var ATRASO = 420, INTERVALO = 30, DURACAO = 500;
     ripas.forEach(function (r, i) {
+      // perspectiva mais curta e ângulo mais aberto: a peça chega de
+      // longe e gira até encostar, em vez de só piscar no lugar
       r.animate([
-        { transform: 'perspective(900px) rotateY(-74deg)', opacity: 0 },
-        { transform: 'perspective(900px) rotateY(0deg)', opacity: 1 }
+        { transform: 'perspective(620px) translateX(-16px) rotateY(-84deg)', opacity: 0 },
+        { transform: 'perspective(620px) translateX(0) rotateY(0deg)', opacity: 1 }
       ], { duration: DURACAO, delay: ATRASO + i * INTERVALO,
-           easing: 'cubic-bezier(.2,.85,.3,1.06)', fill: 'both' });
+           easing: 'cubic-bezier(.18,.82,.28,1.08)', fill: 'both' });
     });
 
     var fim = ATRASO + total * INTERVALO + DURACAO;

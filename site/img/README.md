@@ -198,7 +198,9 @@ diagonal**, no espírito da telha da referência. O corte é feito por
 
 Enquanto não existe, o lugar é preenchido por uma madeira desenhada em
 CSS, com as réguas convergindo em perspectiva (é a convergência que faz
-ler como teto e não como piso).
+ler como teto e não como piso). **Não há rótulo de placeholder ali**: a
+peça se sustenta sozinha, com fio de luz no corte, luz quente escorrendo
+do alto e recuo nos cantos. Sem essas camadas ela lê como chapa lisa.
 
 - Enquadramento: **teto amadeirado visto de baixo**, com as réguas
   correndo na diagonal — a foto que você mandou no chat é exatamente isso

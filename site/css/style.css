@@ -1436,7 +1436,7 @@ a { color: inherit; text-decoration: none; }
    ========================================================================== */
 
 /* foto do ambiente pronto — trocar o none por url('../img/cta.jpg')
-   e tirar a classe cta__vazio do span no HTML */
+   e tirar a classe cta--vazia da <section> no HTML */
 .cta {
   --cta-foto: none;
 
@@ -1513,30 +1513,25 @@ a { color: inherit; text-decoration: none; }
 
 .cta--vazia .cta__foto::before { display: block; }
 
-/* brilho seguindo o corte, pra sugerir a espessura da peça */
+/* Sem rótulo, a madeira desenhada tem que se sustentar sozinha — deixa de
+   ser aviso de lugar vago e passa a ser a peça mesmo. Estas quatro camadas
+   é que fazem isso: sem elas ela lê como chapa lisa e o vazio aparece. */
 .cta__foto::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(101deg,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0.06) 14%,
-    transparent 38%),
+  background:
+    /* o fio de luz correndo no corte, que sugere a espessura da peça */
+    linear-gradient(101deg,
+      rgba(255, 255, 255, 0.28) 0%,
+      rgba(255, 255, 255, 0.06) 14%,
+      transparent 38%),
+    /* luz quente escorrendo do alto, a mesma do painel do hero */
+    radial-gradient(78% 58% at 68% 0%, rgba(255, 204, 138, 0.20), transparent 62%),
+    /* recuo nos cantos: é o que dá volume */
+    radial-gradient(122% 100% at 50% 42%, transparent 40%, rgba(28, 16, 6, 0.32) 100%),
     linear-gradient(to top, rgba(30, 16, 6, 0.34) 0%, transparent 42%);
   pointer-events: none;
-}
-
-.cta__vazio {
-  position: relative;
-  z-index: 2;
-  padding: 9px 18px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
-  color: var(--muted);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 @media (max-width: 900px) {

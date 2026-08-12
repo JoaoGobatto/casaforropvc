@@ -741,7 +741,7 @@ a { color: inherit; text-decoration: none; }
    ========================================================================== */
 
 .sobre {
-  --sobre-foto: none;   /* trocar por url('../img/galpao.jpg') */
+  --sobre-foto: url('../img/sobrenos.webp');
 
   padding: clamp(56px, 9vh, 116px) var(--gutter);
   background: var(--white);
@@ -773,17 +773,6 @@ a { color: inherit; text-decoration: none; }
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-}
-
-.sobre__vazio {
-  padding: 9px 18px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
-  color: var(--muted);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 /* amostra de forro encostada na foto, como uma peça deixada ali.
@@ -1029,14 +1018,14 @@ a { color: inherit; text-decoration: none; }
    ========================================================================== */
 
 /* --- fotos das obras -----------------------------------------------------
-   Uma linha por card. Ao preencher, tirar a classe `obra--vazia` do <li>
-   correspondente no HTML pra sumir com o rótulo de placeholder.
-   Formato: 16/10, 1200x750 já serve; JPG qualidade 78-82.
+   Uma linha por card. As quatro são colagens em pé, feitas pro Instagram —
+   é por isso que o cartão é retrato e o grid tem quatro colunas. Trocar por
+   foto deitada exige rever as duas coisas.
    ---------------------------------------------------------------------- */
-.obra:nth-child(1) .obra__foto { --foto: none; }  /* img/obra-1.jpg */
-.obra:nth-child(2) .obra__foto { --foto: none; }  /* img/obra-2.jpg */
-.obra:nth-child(3) .obra__foto { --foto: none; }  /* img/obra-3.jpg */
-.obra:nth-child(4) .obra__foto { --foto: none; }  /* img/obra-4.jpg */
+.obra:nth-child(1) .obra__foto { --foto: url('../img/obras1.webp'); }
+.obra:nth-child(2) .obra__foto { --foto: url('../img/obras2.webp'); }
+.obra:nth-child(3) .obra__foto { --foto: url('../img/obras3.webp'); }
+.obra:nth-child(4) .obra__foto { --foto: url('../img/obras4.webp'); }
 
 .obras {
   position: relative;
@@ -1069,7 +1058,7 @@ a { color: inherit; text-decoration: none; }
 
 .obras__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(20px, 2.4vw, 38px) clamp(18px, 2vw, 32px);
   max-width: 1560px;
   margin: 0 auto;
@@ -1089,7 +1078,9 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   place-items: center;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
+  /* retrato porque as colagens são verticais; em 16/10 elas perderiam
+     metade do conteúdo e os rótulos ANTES/DEPOIS sairiam do quadro */
+  aspect-ratio: 3 / 4;
   margin-bottom: clamp(14px, 1.6vh, 20px);
   border-radius: 14px;
   background-image: var(--foto, none),
@@ -1112,20 +1103,6 @@ a { color: inherit; text-decoration: none; }
       transparent 1px 15px),
     linear-gradient(150deg, #D7DEEA 0%, #B7C0D2 100%);
 }
-
-.obra__vazio {
-  display: none;
-  padding: 9px 18px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
-  color: var(--muted);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.obra--vazia .obra__vazio { display: block; }
 
 .obra__titulo {
   margin: 0 0 6px;
@@ -1156,6 +1133,13 @@ a { color: inherit; text-decoration: none; }
 .obra:nth-child(2) { transition-delay: 0.12s; }
 .obra:nth-child(3) { transition-delay: 0.20s; }
 .obra:nth-child(4) { transition-delay: 0.28s; }
+
+/* quatro colunas de retrato só cabem em tela larga: abaixo disso cada
+   colagem ficaria com uns 200px e as fotos de dentro sumiriam.
+   Precisa vir ANTES do bloco de 640px, senão ele perde a disputa. */
+@media (max-width: 1180px) {
+  .obras__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 @media (max-width: 640px) {
   .obras__grid { grid-template-columns: minmax(0, 1fr); }

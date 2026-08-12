@@ -141,48 +141,46 @@ perde.
 
 Exportar em JPG qualidade 78-82, abaixo de 600 KB.
 
-## `galpao.jpg` — foto da seção "Sobre nós"
+## `sobrenos.webp` — a foto do "Sobre nós" ✅ em uso
 
-É aqui que a foto do galpão entra — a versão COM fundo da imagem da
-equipe, ou qualquer foto boa do estoque. O argumento da seção é
-justamente o material em casa, então prateleira cheia é o assunto.
+**1500 × 1125, 104 KB.** Díptico: galpão com estoque e carreta carregada
+à esquerda, instalador colocando forro à direita. Casa exatamente com o
+argumento da seção — material em casa e equipe própria.
 
-- Proporção: **4/3** no desktop, 16/10 no vertical (o quadro recorta pelo
-  centro, então não precisa ser exata)
-- Tamanho: **1400 × 1050** basta
-- JPG qualidade 78-82, abaixo de 450 KB
+A proporção do arquivo é 1,334, que é 4/3 na bochecha. Como o quadro é
+`aspect-ratio: 4/3`, não há corte nenhum no desktop.
 
-Pra ligar, uma linha em `css/style.css`, na regra `.sobre`:
+Master sem perda: `sobrenos.png` (7,1 MB, guardado, não servido).
 
-```css
-.sobre { --sobre-foto: url('../img/galpao.jpg'); }
-```
+## `obras1.webp` … `obras4.webp` — a seção de obras ✅ em uso
 
-E tirar o `<span class="sobre__vazio">` do HTML.
+**1200 px de largura, 78–96 KB cada.** São **colagens em pé**, feitas pro
+Instagram — não são fotos soltas:
 
-## `obra-1.jpg` … `obra-4.jpg` — fotos da seção 4
+| Arquivo | O que é |
+|---|---|
+| `obras1` | ANTES/DEPOIS com legendas "Fase 1" e "Fase 2" |
+| `obras2` | ANTES/DEPOIS 2×2, telha exposta → forro branco |
+| `obras3` | grade 2×2 de tetos amadeirados, sem rótulo |
+| `obras4` | grade 2×2: forro branco, vigas, beiral e galpão |
 
-Ainda não existem. Enquanto não entrarem, os cartões mostram um
-placeholder desenhado com o rótulo "foto da obra" — não fica quadro
-quebrado.
+### O formato do cartão saiu delas
 
-- Proporção: **16/10** (o cartão recorta pelo centro, então a foto não
-  precisa ser exata)
-- Tamanho: **1200 × 750** já cobre bem
-- JPG qualidade 78-82, abaixo de 400 KB cada
+O cartão era `16/10` deitado, com o grid em duas colunas. Nesse formato
+metade de cada colagem sairia do quadro e os rótulos ANTES/DEPOIS seriam
+decapitados. Então o cartão virou **`aspect-ratio: 3/4`** e o grid virou
+**quatro colunas** (duas até 1180px, uma até 640px).
 
-### Como ligar cada foto
+**Se um dia entrar foto deitada, as duas coisas voltam juntas** — mudar só
+uma deixa o cartão errado.
 
-Duas edições por obra:
+As razões dos arquivos variam de 0,75 a 0,80. Com `3/4` e `cover`, o corte
+máximo é de 3% em cada lado da `obras1`, longe das letras.
 
-1. Em `css/style.css`, no bloco "fotos das obras", trocar o `none`:
-   ```css
-   .obra:nth-child(1) .obra__foto { --foto: url('../img/obra-1.jpg'); }
-   ```
-2. Em `index.html`, tirar a classe `obra--vazia` do `<li>` correspondente
-   (é ela que mostra o rótulo de placeholder).
+Masters sem perda: `obras1.png` … `obras4.png` (6–7 MB cada, guardados,
+não servidos — o `.vercelignore` mantém todos eles fora do deploy).
 
-### O que fotografar
+### O que fotografar daqui pra frente
 
 O que vende forro é o **antes e depois** e o **ambiente pronto com boa
 luz**. Enquadramento com o teto ocupando boa parte do quadro, linhas

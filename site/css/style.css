@@ -461,13 +461,6 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink);
 }
 
-.menu__caret {
-  width: 7px;
-  height: auto;
-  flex: none;
-  fill: currentColor;
-}
-
 /* --- lado direito --- */
 
 .bar__right {
@@ -1604,7 +1597,9 @@ a { color: inherit; text-decoration: none; }
 
 .rodape__cols {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* três, não quatro: a coluna Institucional saiu junto com a política e
+     os termos, que não teriam o que dizer num site sem formulário */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(26px, 3vw, 48px);
   padding: clamp(30px, 4.4vh, 52px) 0;
 }

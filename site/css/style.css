@@ -198,6 +198,52 @@ a { color: inherit; text-decoration: none; }
   filter: drop-shadow(0 34px 60px rgba(34, 21, 10, 0.30));
 }
 
+/* A testeira: a peça que corre na aba do telhado e passa do beiral nas duas
+   pontas. Sem ela o telhado é um corte sem espessura, e as ripas começam
+   numa aresta seca.
+
+   É uma cantoneira só, em clip-path, e não duas barras giradas — o ângulo da
+   empena muda com a largura da tela e não dá pra calcular arco-tangente em
+   CSS. Aqui a geometria é toda proporcional, então ela acompanha sozinha.
+
+   --sal é a saliência do beiral em % da CASA, e o 1.08 é consequência dela:
+   a ponta desce 2 × --sal além da altura do telhado, seguindo a mesma
+   inclinação. Se mexer numa, mexa na outra (fator = 1 + 2 × --sal). */
+.telha {
+  --sal: 4%;
+  --esp: clamp(9px, 1vw, 13px);
+  --ponta: calc(var(--telhado-alt) * 1.08);
+
+  position: absolute;
+  z-index: 7;
+  left: calc(-1 * var(--sal));
+  right: calc(-1 * var(--sal));
+  top: calc(var(--esp) / -2);
+  height: calc(var(--ponta) + var(--esp));
+  clip-path: polygon(0 var(--ponta), 50% 0, 100% var(--ponta),
+                     100% calc(var(--ponta) + var(--esp)), 50% var(--esp),
+                     0 calc(var(--ponta) + var(--esp)));
+  /* claro na cumeeira, escuro no beiral: a luz do painel vem de cima */
+  background: linear-gradient(180deg, #D9A46A 0%, #BC8750 34%,
+                              #9C6733 58%, #8A5628 78%, #6E441F 100%);
+  /* a sombra vem do filtro; com clip-path o box-shadow seria recortado fora */
+  filter: drop-shadow(0 5px 11px rgba(34, 21, 10, 0.42));
+  animation: surge 420ms ease-out both;
+}
+
+/* fio de luz na aresta de cima, pra peça ter espessura e não virar chapa */
+.telha::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 var(--ponta), 50% 0, 100% var(--ponta),
+                     100% calc(var(--ponta) + 2px), 50% 2px,
+                     0 calc(var(--ponta) + 2px));
+  background: rgba(255, 233, 197, 0.55);
+}
+
+@keyframes surge { from { opacity: 0; } to { opacity: 1; } }
+
 /* A parede nua: é o que se vê ANTES da montagem. O vão escuro entre as
    ripas não mora aqui — ele vem preso a cada peça, então chega junto com
    ela. Assim a obra começa numa parede clara, como na vida real. */
@@ -337,6 +383,9 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 900px) {
   .telhado { --empena: 0.15; --painel-h: min(74svh, 640px); width: 92vw; }
   .led { left: 6%; right: 6%; }
+  /* a casa já ocupa 92vw: com 4% de beiral a ponta encosta na borda da tela
+     e o corte fica desleixado. Aqui o fator acompanha (1 + 2 × --sal). */
+  .telha { --sal: 2.5%; --ponta: calc(var(--telhado-alt) * 1.05); }
 }
 
 /* ==========================================================================

@@ -768,22 +768,6 @@ a { color: inherit; text-decoration: none; }
   background-position: center;
 }
 
-/* amostra de forro encostada na foto, como uma peça deixada ali.
-   É o mesmo material desenhado que aparece no hero e na chamada final. */
-.sobre__amostra {
-  position: absolute;
-  left: clamp(-14px, -1vw, -8px);
-  bottom: clamp(-16px, -1.4vw, -10px);
-  width: clamp(76px, 9vw, 124px);
-  aspect-ratio: 1;
-  border: 4px solid var(--white);
-  border-radius: 14px;
-  background-image: var(--madeira-img);
-  background-size: var(--madeira-size);
-  background-blend-mode: var(--madeira-blend);
-  box-shadow: 0 12px 26px rgba(17, 17, 17, 0.16);
-}
-
 /* --- texto --- */
 
 .sobre__texto {
@@ -823,7 +807,6 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 860px) {
   .sobre__caixa { grid-template-columns: minmax(0, 1fr); }
   .sobre__foto { aspect-ratio: 16 / 10; }
-  .sobre__amostra { left: auto; right: 14px; bottom: -14px; }
 }
 
 /* ==========================================================================

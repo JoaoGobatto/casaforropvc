@@ -212,7 +212,7 @@ do alto e recuo nos cantos. Sem essas camadas ela lê como chapa lisa.
    .cta { --cta-foto: url('../img/cta.jpg'); }
    ```
 2. Em `index.html`, tirar a classe `cta--vazia` do `<section class="cta">`
-   (é ela que mostra a madeira de CSS e o rótulo).
+   (é ela que mostra a madeira de CSS).
 
 ## Outras imagens pendentes
 
@@ -221,7 +221,8 @@ do alto e recuo nos cantos. Sem essas camadas ela lê como chapa lisa.
   feita por JS. Não há foto pra subir ali.
 
   Os dois círculos decorativos que existiam no hero saíram — o painel
-  ocupa o lugar deles. A textura de madeira (`--madeira-img`) continua
-  viva na amostra do "Sobre nós" e na peça da chamada final
-- **Logo real** (`logo.png` / `logo.svg`) — o header usa um lockup
-  provisório desenhado em SVG
+  ocupa o lugar deles. A amostra de madeira que ficava encostada na foto
+  do "Sobre nós" também saiu. A textura (`--madeira-img`) segue viva num
+  lugar só: a peça da chamada final.
+
+A única imagem que ainda falta é essa `cta.jpg`.

@@ -159,14 +159,18 @@ Instagram — não são fotos soltas:
 
 | Cartão | Arquivo | O que é |
 |---|---|---|
-| 1 | `obras5` | ANTES/DEPOIS com legendas "Fase 1" e "Fase 2" |
+| 1 | `obras6` | ANTES/DEPOIS com legendas "Fase 1" e "Fase 2" |
 | 2 | `obras2` | ANTES/DEPOIS 2×2, telha exposta → forro branco |
 | 3 | `obras3` | grade 2×2 de tetos amadeirados, sem rótulo |
 | 4 | `obras4` | grade 2×2: forro branco, vigas, beiral e galpão |
 
-O primeiro cartão usa a **`obras5`, não a `obras1`** — é a mesma colagem
-com as tarjas em branco e texto preto, que combina com a `obras2` ao lado.
-A `obras1.png` continua guardada, mas não é servida.
+A mesma obra foi enviada três vezes, cada uma com a diagramação um pouco
+diferente. Vale a **`obras6`**: tarjas brancas com texto preto (combina com
+a `obras2` ao lado) e sem as linhas divisórias pretas entre os quadrantes.
+As `obras1.png` e `obras5.png` continuam guardadas, mas não são servidas.
+
+A `obras6.png` chegou como `Gemini_Generated_Image_duq9lt…` e foi renomeada
+pra seguir o padrão da pasta.
 
 ### O formato do cartão saiu delas
 
@@ -181,7 +185,7 @@ uma deixa o cartão errado.
 As razões dos arquivos variam de 0,75 a 0,80. Com `3/4` e `cover`, o corte
 máximo é de 3% em cada lado da `obras1`, longe das letras.
 
-Masters sem perda: `obras2.png` … `obras5.png` (6–7 MB cada, guardados,
+Masters sem perda: `obras1.png` … `obras6.png` (6–7 MB cada, guardados,
 não servidos — o `.vercelignore` mantém todos eles fora do deploy).
 
 ### O que fotografar daqui pra frente

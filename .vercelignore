@@ -1,0 +1,17 @@
+# O site publicado usa só os .webp. Os .png são masters sem perda, guardados
+# pra futuros recortes — são 4,4 MB que não precisam viajar no deploy.
+# Continuam no repositório; só não sobem pra Vercel.
+site/img/*.png
+site/img/README.md
+
+# nada disso é site
+_memoria/
+identidade/
+marketing/
+saidas/
+scripts/
+templates/
+dados/
+.claude/
+CLAUDE.md
+README.md

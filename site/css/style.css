@@ -993,16 +993,6 @@ a { color: inherit; text-decoration: none; }
    Selo, título com botão à direita e cartões de foto em duas colunas.
    ========================================================================== */
 
-/* --- fotos das obras -----------------------------------------------------
-   Uma linha por card. As quatro são colagens em pé, feitas pro Instagram —
-   é por isso que o cartão é retrato e o grid tem quatro colunas. Trocar por
-   foto deitada exige rever as duas coisas.
-   ---------------------------------------------------------------------- */
-.obra:nth-child(1) .obra__foto { --foto: url('../img/obras6.webp'); }
-.obra:nth-child(2) .obra__foto { --foto: url('../img/obras2.webp'); }
-.obra:nth-child(3) .obra__foto { --foto: url('../img/obras3.webp'); }
-.obra:nth-child(4) .obra__foto { --foto: url('../img/obras4.webp'); }
-
 .obras {
   position: relative;
   z-index: 1;
@@ -1032,102 +1022,280 @@ a { color: inherit; text-decoration: none; }
   text-wrap: balance;
 }
 
-.obras__grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(20px, 2.4vw, 38px) clamp(18px, 2vw, 32px);
+/* --- carrossel ------------------------------------------------------------
+   Trilho que rola na horizontal com encaixe. A altura é fixa e a largura
+   sai da proporção de cada foto: retrato fica estreito, paisagem fica
+   larga, e nenhuma das duas é cortada. Foi o que permitiu misturar as
+   duas orientações que o cliente mandou sem recortar nada.
+   ---------------------------------------------------------------------- */
+.carrossel {
+  position: relative;
   max-width: 1560px;
   margin: 0 auto;
-  padding: 0;
+}
+
+.carrossel__trilho {
+  display: flex;
+  gap: clamp(12px, 1.4vw, 22px);
+  /* sangra até a borda da tela: a foto seguinte fica meio cortada na
+     margem, que é o que avisa que o trilho continua */
+  margin-inline: calc(-1 * var(--gutter));
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
   list-style: none;
 }
 
-.obra__link {
-  display: block;
-  border-radius: 14px;
+.carrossel__trilho::-webkit-scrollbar { display: none; }
+
+.obra {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
 }
 
-/* a foto é o placeholder até --foto receber uma imagem: o padrão de
-   ripas segura o lugar sem parecer quadro quebrado */
-.obra__foto {
+.obra__quadro {
   position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  border-radius: 16px;
+  background: #DFE4EE;
+}
+
+/* a altura manda; a largura vem da proporção do arquivo. O teto de
+   largura é só pras paisagens: soltas, elas passavam de mil pixels e
+   engoliam a fileira inteira — com o limite, cortam um pouco na lateral
+   e voltam a conviver com os retratos. */
+.obra__img {
+  display: block;
+  height: clamp(320px, 52vh, 580px);
+  width: auto;
+  max-width: min(64vw, 740px);
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.obra__quadro:hover .obra__img { transform: scale(1.04); }
+
+.obra__legenda {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 34px 16px 14px;
+  background: linear-gradient(to top,
+    rgba(9, 14, 30, 0.86) 0%, rgba(9, 14, 30, 0.5) 45%, transparent 100%);
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+/* --- setas ---
+   Só aparecem onde há ponteiro. No toque o próprio arrasto resolve, e
+   duas bolas sobre a foto só roubariam área. */
+.carrossel__seta {
+  position: absolute;
+  top: calc(clamp(320px, 52vh, 580px) / 2);
+  z-index: 2;
   display: grid;
   place-items: center;
-  overflow: hidden;
-  /* retrato porque as colagens são verticais; em 16/10 elas perderiam
-     metade do conteúdo e os rótulos ANTES/DEPOIS sairiam do quadro */
-  aspect-ratio: 3 / 4;
-  margin-bottom: clamp(14px, 1.6vh, 20px);
-  border-radius: 14px;
-  background-image: var(--foto, none),
-    repeating-linear-gradient(115deg,
-      rgba(255, 255, 255, 0.55) 0 1px,
-      transparent 1px 15px),
-    linear-gradient(150deg, #DFE4EE 0%, #C4CCDB 100%);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 8px 22px rgba(17, 17, 17, 0.14);
+  cursor: pointer;
+  transition: background 0.25s, transform 0.25s, opacity 0.25s;
 }
 
-/* variação de tom pros placeholders não ficarem quatro cópias */
-.obra:nth-child(2) .obra__foto,
-.obra:nth-child(3) .obra__foto {
-  background-image: var(--foto, none),
-    repeating-linear-gradient(115deg,
-      rgba(255, 255, 255, 0.5) 0 1px,
-      transparent 1px 15px),
-    linear-gradient(150deg, #D7DEEA 0%, #B7C0D2 100%);
+.carrossel__seta svg {
+  width: 17px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.obra__titulo {
-  margin: 0 0 6px;
-  font-size: clamp(0.92rem, 1.05vw, 1.05rem);
-  font-weight: 800;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  color: var(--ink);
-  transition: color 0.3s ease;
-}
+.carrossel__seta:hover { background: var(--white); transform: translateY(-50%) scale(1.07); }
+.carrossel__seta--ant  { left: calc(var(--gutter) - 23px); }
+.carrossel__seta--prox { right: calc(var(--gutter) - 23px); }
 
-.obra__meta {
-  margin: 0;
-  font-size: clamp(0.8rem, 0.88vw, 0.875rem);
-  font-weight: 500;
-  color: var(--muted);
-}
-
-/* --- hover: a foto aproxima e o título vai pro azul --------------------- */
-
-.obra__link:hover .obra__foto,
-.obra__link:focus-visible .obra__foto { transform: scale(1.035); }
-
-.obra__link:hover .obra__titulo,
-.obra__link:focus-visible .obra__titulo { color: var(--accent); }
-
-.obra:nth-child(1) { transition-delay: 0.04s; }
-.obra:nth-child(2) { transition-delay: 0.12s; }
-.obra:nth-child(3) { transition-delay: 0.20s; }
-.obra:nth-child(4) { transition-delay: 0.28s; }
-
-/* quatro colunas de retrato só cabem em tela larga: abaixo disso cada
-   colagem ficaria com uns 200px e as fotos de dentro sumiriam.
-   Precisa vir ANTES do bloco de 640px, senão ele perde a disputa. */
-@media (max-width: 1180px) {
-  .obras__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (max-width: 640px) {
-  .obras__grid { grid-template-columns: minmax(0, 1fr); }
-
-  .obras__topo { align-items: flex-start; }
-  .obras__topo .btn { width: 100%; max-width: 320px; justify-content: center; }
+/* ponta do trilho: some em vez de virar botão que não faz nada */
+.carrossel__seta[disabled] {
+  opacity: 0;
+  pointer-events: none;
 }
 
 @media (hover: none) {
-  .obra__link:hover .obra__foto { transform: none; }
-  .obra__link:hover .obra__titulo { color: var(--ink); }
+  .carrossel__seta { display: none; }
+  .obra__quadro:hover .obra__img { transform: none; }
 }
+
+}
+
+/* ==========================================================================
+   GALERIA — o <dialog> que abre em "Ver todas as obras"
+   Cobre quase a tela toda, mas sobra margem de propósito: dá pra ver que
+   a página continua atrás, então o painel lê como camada e não como
+   troca de página.
+   ========================================================================== */
+
+.galeria {
+  width: min(1180px, 100vw - clamp(16px, 5vw, 72px));
+  max-width: none;
+  height: min(880px, 100svh - clamp(16px, 5vh, 64px));
+  max-height: none;
+  padding: 0;
+  margin: auto;
+  overflow: hidden;
+  border: none;
+  border-radius: 18px;
+  background: var(--white);
+  box-shadow: 0 30px 90px rgba(9, 14, 30, 0.34);
+}
+
+.galeria::backdrop {
+  background: rgba(9, 14, 30, 0.62);
+  backdrop-filter: blur(3px);
+}
+
+/* o dialog nasce em display:none; sem animar a partir de [open] a
+   entrada não roda. Curta de propósito: é painel, não abertura de site. */
+@media (prefers-reduced-motion: no-preference) {
+  .galeria[open] { animation: galeria-entra 0.28s cubic-bezier(.2,.7,.25,1); }
+  .galeria[open]::backdrop { animation: galeria-fundo 0.28s ease-out; }
+}
+
+@keyframes galeria-entra {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+}
+
+@keyframes galeria-fundo { from { opacity: 0; } }
+
+.galeria__topo {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(16px, 2.2vw, 24px) clamp(18px, 2.6vw, 30px);
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+}
+
+.galeria__titulo {
+  margin: 0;
+  font-family: 'Anton', 'Montserrat', sans-serif;
+  font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.galeria__fechar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--chip);
+  cursor: pointer;
+  transition: background 0.22s, transform 0.22s;
+}
+
+.galeria__fechar svg {
+  width: 15px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.galeria__fechar:hover { background: var(--dash); transform: rotate(90deg); }
+
+.galeria__corpo {
+  height: calc(100% - 1px);
+  padding: clamp(16px, 2.4vw, 28px) clamp(18px, 2.6vw, 30px) clamp(24px, 3vw, 36px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* mosaico em colunas: as fotos têm alturas diferentes e o empilhamento
+   por coluna acomoda isso sem cortar nem deixar buraco */
+.galeria__mosaico {
+  /* o 210px é piso de largura de coluna: quatro em tela larga, três em
+     tablet, uma no celular — onde foto miúda de teto não se lê */
+  columns: 4 210px;
+  column-gap: clamp(10px, 1.2vw, 16px);
+}
+
+.galeria__mosaico--antes { columns: 2 300px; }
+
+.tijolo {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0 0 clamp(10px, 1.2vw, 16px);
+  border-radius: 12px;
+  background: #DFE4EE;
+  /* sem isto o navegador parte a figura no meio entre duas colunas */
+  break-inside: avoid;
+}
+
+.tijolo__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tijolo__legenda {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 26px 12px 10px;
+  background: linear-gradient(to top,
+    rgba(9, 14, 30, 0.85) 0%, rgba(9, 14, 30, 0.45) 50%, transparent 100%);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.tijolo:hover .tijolo__legenda,
+.tijolo:focus-within .tijolo__legenda { opacity: 1; }
+
+/* no toque não existe hover: a legenda fica sempre visível */
+@media (hover: none) {
+  .tijolo__legenda { opacity: 1; }
+}
+
+.galeria__sub {
+  margin: clamp(24px, 3vw, 36px) 0 clamp(12px, 1.4vw, 18px);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+body.galeria-aberta { overflow: hidden; }
 
 /* ==========================================================================
    SEÇÃO 5 — DEPOIMENTOS

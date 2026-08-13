@@ -241,8 +241,8 @@
 
 <!-- ============================================================
      SEÇÃO 4 — OBRAS
-     As quatro fotos são reais e entram por --foto em css/style.css.
-     Os textos descrevem o que cada imagem mostra — não há bairro,
+     Carrossel de 9 fotos + galeria de 15 no <dialog> abaixo. As
+     legendas descrevem o que a imagem mostra — não há bairro,
      metragem nem data, porque esses dados ainda não vieram.
      ============================================================ -->
 <section class="obras" id="obras" aria-labelledby="obras-titulo">
@@ -259,50 +259,211 @@
 
   <div class="obras__topo" data-reveal>
     <h2 class="obras__titulo" id="obras-titulo">Obras que a gente entregou</h2>
-    <a class="btn btn--dark" href="#todas-obras">
+    <button class="btn btn--dark" type="button" data-abre-galeria>
       Ver todas as obras
       <svg class="btn__arrow" viewBox="0 0 18 12" aria-hidden="true">
         <path d="M0 6h16M11.5 1 17 6l-5.5 5"/>
       </svg>
-    </a>
+    </button>
   </div>
 
-  <ul class="obras__grid">
-
+  <!-- Altura fixa, largura livre: cada foto entra na proporção que tem,
+       sem corte. É o que deixa retrato e paisagem no mesmo trilho. -->
+  <div class="carrossel" data-carrossel>
+    <ul class="carrossel__trilho" data-reveal-group>
     <li class="obra" data-reveal>
-      <div class="obra__link">
-        <span class="obra__foto" aria-hidden="true"></span>
-        <h3 class="obra__titulo">Varanda e cozinha · antes e depois</h3>
-        <p class="obra__meta">Forro amadeirado montado sobre a estrutura existente</p>
-      </div>
+      <figure class="obra__quadro">
+        <img class="obra__img" src="img/obras/obra-01.webp" alt="Sala de estar com forro amadeirado e luminárias embutidas"
+             width="1000" height="1333" loading="lazy" decoding="async">
+        <figcaption class="obra__legenda">Sala de estar com forro amadeirado e luminárias embutidas</figcaption>
+      </figure>
     </li>
-
     <li class="obra" data-reveal>
-      <div class="obra__link">
-        <span class="obra__foto" aria-hidden="true"></span>
-        <h3 class="obra__titulo">Quarto e corredor · antes e depois</h3>
-        <p class="obra__meta">Telha exposta fechada com forro branco liso</p>
-      </div>
+      <figure class="obra__quadro">
+        <img class="obra__img" src="img/obras/obra-03.webp" alt="Varanda externa com forro amadeirado e sanca"
+             width="1400" height="788" loading="lazy" decoding="async">
+        <figcaption class="obra__legenda">Varanda externa com forro amadeirado e sanca</figcaption>
+      </figure>
     </li>
-
     <li class="obra" data-reveal>
-      <div class="obra__link">
-        <span class="obra__foto" aria-hidden="true"></span>
-        <h3 class="obra__titulo">Ambientes em forro amadeirado</h3>
-        <p class="obra__meta">Tons claro e imbuia, com iluminação embutida</p>
-      </div>
+      <figure class="obra__quadro">
+        <img class="obra__img" src="img/obras/obra-02.webp" alt="Garagem coberta com forro amadeirado"
+             width="1000" height="1333" loading="lazy" decoding="async">
+        <figcaption class="obra__legenda">Garagem coberta com forro amadeirado</figcaption>
+      </figure>
     </li>
-
     <li class="obra" data-reveal>
-      <div class="obra__link">
-        <span class="obra__foto" aria-hidden="true"></span>
-        <h3 class="obra__titulo">Forro branco, vigas e beiral</h3>
-        <p class="obra__meta">Residências e galpão, interno e externo</p>
-      </div>
+      <figure class="obra__quadro">
+        <img class="obra__img" src="img/obras/obra-05.webp" alt="Área externa com forro amadeirado sobre a escada"
+             width="1000" height="1333" loading="lazy" decoding="async">
+        <figcaption class="obra__legenda">Área externa com forro amadeirado sobre a escada</figcaption>
+      </figure>
     </li>
+    <li class="obra" data-reveal>
+      <figure class="obra__quadro">
+        <img class="obra__img" src="img/obras/obra-08.webp" alt="Beiral amadeirado sobre a área externa"
+             width="1400" height="788" loading="lazy" decoding="async">
+        <figcaption class="obra__legenda">Beiral amadeirado sobre a área externa</figcaption>
+      </figure>
+    </li>
+    <li class="obra" data-reveal>
+      <figure class="obra__quadro">
+        <img class="obra__img" src="img/obras/obra-06.webp" alt="Salão com forro amadeirado e estrutura metálica aparente"
+             width="1000" height="1333" loading="lazy" decoding="async">
+        <figcaption class="obra__legenda">Salão com forro amadeirado e estrutura metálica aparente</figcaption>
+      </figure>
+    </li>
+    <li class="obra" data-reveal>
+      <figure class="obra__quadro">
+        <img class="obra__img" src="img/obras/obra-07.webp" alt="Varanda comprida com forro branco e spots"
+             width="1000" height="1333" loading="lazy" decoding="async">
+        <figcaption class="obra__legenda">Varanda comprida com forro branco e spots</figcaption>
+      </figure>
+    </li>
+    <li class="obra" data-reveal>
+      <figure class="obra__quadro">
+        <img class="obra__img" src="img/obras/obra-04.webp" alt="Encontro de forro amadeirado com a parede"
+             width="1000" height="1333" loading="lazy" decoding="async">
+        <figcaption class="obra__legenda">Encontro de forro amadeirado com a parede</figcaption>
+      </figure>
+    </li>
+    <li class="obra" data-reveal>
+      <figure class="obra__quadro">
+        <img class="obra__img" src="img/obras/obra-09.webp" alt="Corredor lateral com forro branco"
+             width="1000" height="1333" loading="lazy" decoding="async">
+        <figcaption class="obra__legenda">Corredor lateral com forro branco</figcaption>
+      </figure>
+    </li>
+    </ul>
 
-  </ul>
+    <button class="carrossel__seta carrossel__seta--ant" type="button"
+            data-ir="-1" aria-label="Ver obras anteriores">
+      <svg viewBox="0 0 18 12" aria-hidden="true"><path d="M18 6H2M6.5 1 1 6l5.5 5"/></svg>
+    </button>
+    <button class="carrossel__seta carrossel__seta--prox" type="button"
+            data-ir="1" aria-label="Ver próximas obras">
+      <svg viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11.5 1 17 6l-5.5 5"/></svg>
+    </button>
+  </div>
 </section>
+
+<!-- ============================================================
+     GALERIA — abre pelo botão "Ver todas as obras".
+     <dialog> nativo: Esc, foco preso e fundo escurecido saem de
+     graça, sem uma linha de JS pra cada um.
+     ============================================================ -->
+<dialog class="galeria" id="galeria" aria-labelledby="galeria-titulo">
+  <div class="galeria__topo">
+    <h2 class="galeria__titulo" id="galeria-titulo">Todas as obras</h2>
+    <button class="galeria__fechar" type="button" data-fechar aria-label="Fechar galeria">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg>
+    </button>
+  </div>
+
+  <div class="galeria__corpo">
+    <div class="galeria__mosaico">
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-01.webp" alt="Sala de estar com forro amadeirado e luminárias embutidas"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Sala de estar com forro amadeirado e luminárias embutidas</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-02.webp" alt="Garagem coberta com forro amadeirado"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Garagem coberta com forro amadeirado</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-03.webp" alt="Varanda externa com forro amadeirado e sanca"
+               width="1400" height="788" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Varanda externa com forro amadeirado e sanca</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-04.webp" alt="Encontro de forro amadeirado com a parede"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Encontro de forro amadeirado com a parede</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-05.webp" alt="Área externa com forro amadeirado sobre a escada"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Área externa com forro amadeirado sobre a escada</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-06.webp" alt="Salão com forro amadeirado e estrutura metálica aparente"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Salão com forro amadeirado e estrutura metálica aparente</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-07.webp" alt="Varanda comprida com forro branco e spots"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Varanda comprida com forro branco e spots</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-08.webp" alt="Beiral amadeirado sobre a área externa"
+               width="1400" height="788" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Beiral amadeirado sobre a área externa</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-09.webp" alt="Corredor lateral com forro branco"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Corredor lateral com forro branco</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-10.webp" alt="Montagem do forro amadeirado no salão"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Montagem do forro amadeirado no salão</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-11.webp" alt="Área gourmet da piscina com forro amadeirado"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Área gourmet da piscina com forro amadeirado</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-12.webp" alt="Cozinha externa em acabamento"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Cozinha externa em acabamento</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-13.webp" alt="Forro amadeirado sobre a bancada da área gourmet"
+               width="1000" height="1333" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Forro amadeirado sobre a bancada da área gourmet</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-14.webp" alt="Quarto com forro amadeirado"
+               width="1000" height="1755" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Quarto com forro amadeirado</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras/obra-15.webp" alt="Galpão com forro branco sobre a estrutura"
+               width="1000" height="1421" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Galpão com forro branco sobre a estrutura</figcaption>
+        </figure>
+    </div>
+
+    <h3 class="galeria__sub">Antes e depois</h3>
+    <div class="galeria__mosaico galeria__mosaico--antes">
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras6.webp" alt="Varanda e cozinha, antes e depois: forro amadeirado sobre a estrutura existente"
+               width="1842" height="2304" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Varanda e cozinha, antes e depois: forro amadeirado sobre a estrutura existente</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras2.webp" alt="Quarto e corredor, antes e depois: telha exposta fechada com forro branco"
+               width="1792" height="2390" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Quarto e corredor, antes e depois: telha exposta fechada com forro branco</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras3.webp" alt="Quatro ambientes com forro amadeirado, em tom claro e imbuia"
+               width="1792" height="2390" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Quatro ambientes com forro amadeirado, em tom claro e imbuia</figcaption>
+        </figure>
+        <figure class="tijolo">
+          <img class="tijolo__img" src="img/obras4.webp" alt="Forro branco com vigas, beiral externo, corredor e galpão"
+               width="1792" height="2356" loading="lazy" decoding="async">
+          <figcaption class="tijolo__legenda">Forro branco com vigas, beiral externo, corredor e galpão</figcaption>
+        </figure>
+    </div>
+  </div>
+</dialog>
 
 <!-- ============================================================
      SEÇÃO 5 — DEPOIMENTOS
@@ -656,6 +817,75 @@
     // os que estão dentro de um grupo ficam de fora daqui
     observar('[data-reveal]:not([data-reveal-group] [data-reveal])', 0.15);
     observarGrupo('[data-reveal-group]', 0.12);
+  })();
+
+  // carrossel de obras — setas e estado de ponta
+  (function () {
+    var caixa = document.querySelector('[data-carrossel]');
+    if (!caixa) return;
+
+    var trilho = caixa.querySelector('.carrossel__trilho');
+    var ant = caixa.querySelector('[data-ir="-1"]');
+    var prox = caixa.querySelector('[data-ir="1"]');
+    if (!trilho || !ant || !prox) return;
+
+    // rola por "quase uma tela": deixar sobra na borda é o que mantém a
+    // referência de onde se estava antes do clique
+    function passo() {
+      var primeiro = trilho.querySelector('.obra');
+      var largura = primeiro ? primeiro.offsetWidth + 18 : 320;
+      return Math.max(largura, trilho.clientWidth * 0.8);
+    }
+
+    [ant, prox].forEach(function (b) {
+      b.addEventListener('click', function () {
+        trilho.scrollBy({ left: passo() * Number(b.dataset.ir), behavior: 'smooth' });
+      });
+    });
+
+    // nas pontas a seta some: botão que não faz nada é pior que botão nenhum
+    function marcarPontas() {
+      var fim = trilho.scrollWidth - trilho.clientWidth;
+      ant.disabled = trilho.scrollLeft <= 2;
+      prox.disabled = trilho.scrollLeft >= fim - 2;
+    }
+
+    trilho.addEventListener('scroll', marcarPontas, { passive: true });
+    window.addEventListener('resize', marcarPontas);
+    // as fotos são lazy: a largura do trilho só fecha quando elas chegam
+    window.addEventListener('load', marcarPontas);
+    marcarPontas();
+  })();
+
+  // galeria — abre no "Ver todas as obras"
+  (function () {
+    var dlg = document.getElementById('galeria');
+    var abre = document.querySelector('[data-abre-galeria]');
+    if (!dlg || !abre) return;
+
+    // sem showModal (navegador antigo) o <dialog> abriria como bloco solto
+    // no meio da página. Melhor o botão sumir do que abrir quebrado.
+    if (typeof dlg.showModal !== 'function') { abre.hidden = true; return; }
+
+    abre.addEventListener('click', function () {
+      dlg.showModal();
+      document.body.classList.add('galeria-aberta');
+    });
+
+    dlg.addEventListener('close', function () {
+      document.body.classList.remove('galeria-aberta');
+      abre.focus();
+    });
+
+    dlg.querySelector('[data-fechar]').addEventListener('click', function () {
+      dlg.close();
+    });
+
+    // clique fora do conteúdo fecha. O alvo só é o próprio <dialog> quando
+    // o clique caiu no ::backdrop — em qualquer filho o alvo é outro.
+    dlg.addEventListener('click', function (e) {
+      if (e.target === dlg) dlg.close();
+    });
   })();
 
   // menu mobile

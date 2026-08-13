@@ -152,75 +152,51 @@ A proporção do arquivo é 1,334, que é 4/3 na bochecha. Como o quadro é
 
 Master sem perda: `sobrenos.png` (7,1 MB, guardado, não servido).
 
-## `obras1.webp` … `obras4.webp` — a seção de obras ✅ em uso
+## `obras/obra-01.webp` … `obra-15.webp` — as fotos do cliente ✅ em uso
 
-**1200 px de largura, 78–96 KB cada.** São **colagens em pé**, feitas pro
-Instagram — não são fotos soltas:
+**15 fotos, 1,5 MB no total.** Vieram 26 arquivos do cliente; o que entrou
+e o que ficou de fora:
 
-| Cartão | Arquivo | O que é |
+| Grupo | Quantas | Destino |
 |---|---|---|
-| 1 | `obras6` | ANTES/DEPOIS com legendas "Fase 1" e "Fase 2" |
-| 2 | `obras2` | ANTES/DEPOIS 2×2, telha exposta → forro branco |
-| 3 | `obras3` | grade 2×2 de tetos amadeirados, sem rótulo |
-| 4 | `obras4` | grade 2×2: forro branco, vigas, beiral e galpão |
+| Ambiente pronto, limpo | 9 | carrossel **e** galeria |
+| Forro instalado, obra ainda em andamento | 6 | só a galeria |
+| Chão coberto de resto de obra | 3 | fora — em galeria de entregas, lê como entrega |
+| Catálogo de linha e anúncio | 6 | fora — não são obras (ver abaixo) |
 
-A mesma obra foi enviada três vezes, cada uma com a diagramação um pouco
-diferente. Vale a **`obras6`**: tarjas brancas com texto preto (combina com
-a `obras2` ao lado) e sem as linhas divisórias pretas entre os quadrantes.
-As `obras1.png` e `obras5.png` continuam guardadas, mas não são servidas.
+Os originais estão em `_fotos-originais/` na raiz, fora do deploy. **14
+deles são `.HEIC`**, que Chrome e Firefox não abrem — por isso tudo que
+vai pro site passa por conversão, nunca é servido direto.
 
-A `obras6.png` chegou como `Gemini_Generated_Image_duq9lt…` e foi renomeada
-pra seguir o padrão da pasta.
+### O carrossel usa altura fixa e largura livre
 
-### O formato do cartão saiu delas
+As fotos vêm em retrato (3:4) e paisagem (16:9). Em vez de recortar todas
+num formato só, o slide tem **altura fixa** e a largura sai da proporção
+do arquivo: retrato fica estreito, paisagem fica larga, e nada é cortado.
+As paisagens têm um teto de largura (`max-width`), senão passariam de mil
+pixels e engoliriam a fileira.
 
-O cartão era `16/10` deitado, com o grid em duas colunas. Nesse formato
-metade de cada colagem sairia do quadro e os rótulos ANTES/DEPOIS seriam
-decapitados. Então o cartão virou **`aspect-ratio: 3/4`** e o grid virou
-**quatro colunas** (duas até 1180px, uma até 640px).
+Foto nova entra em `site/img/obras/` e ganha um `<li class="obra">` no
+trilho, com `width`/`height` reais no `<img>` — são eles que reservam o
+espaço antes do arquivo chegar.
 
-**Se um dia entrar foto deitada, as duas coisas voltam juntas** — mudar só
-uma deixa o cartão errado.
+### As colagens antes/depois continuam vivas
 
-As razões dos arquivos variam de 0,75 a 0,80. Com `3/4` e `cover`, o corte
-máximo é de 3% em cada lado da `obras1`, longe das letras.
+`obras2`, `obras3`, `obras4` e `obras6` saíram da seção e foram pro fim da
+galeria, sob "Antes e depois". São de qualidade bem menor que as fotos
+novas, mas mostram o que nenhuma delas mostra: o teto de antes.
 
-Masters sem perda: `obras1.png` … `obras6.png` (6–7 MB cada, guardados,
-não servidos — o `.vercelignore` mantém todos eles fora do deploy).
+Masters em `obras1.png` … `obras6.png`, fora do deploy.
 
-### O que fotografar daqui pra frente
+## O que sobrou e daria uma seção nova
 
-O que vende forro é o **antes e depois** e o **ambiente pronto com boa
-luz**. Enquadramento com o teto ocupando boa parte do quadro, linhas
-retas, sem contraluz de janela estourando. Foto de celular resolve, desde
-que o ambiente esteja limpo e iluminado.
+Três dos arquivos são **catálogos de linha** prontos — Itaúnas (Carvalho,
+Verm. Dark, Nogueira), Aracê (Angelim, Malbec, Marfim, York) e Viana
+(Gemini, Liso, Frisado, Junta Seca). É exatamente o material de uma seção
+"tipos de forro", que hoje não existe no site.
 
-## `cta.jpg` — a peça da chamada final
-
-O bloco antes do rodapé não é um quadro de foto: é uma **peça cortada na
-diagonal**, no espírito da telha da referência. O corte é feito por
-`clip-path`, então a foto que entrar ali vai ser recortada no mesmo
-ângulo — não precisa vir cortada.
-
-Enquanto não existe, o lugar é preenchido por uma madeira desenhada em
-CSS, com as réguas convergindo em perspectiva (é a convergência que faz
-ler como teto e não como piso). **Não há rótulo de placeholder ali**: a
-peça se sustenta sozinha, com fio de luz no corte, luz quente escorrendo
-do alto e recuo nos cantos. Sem essas camadas ela lê como chapa lisa.
-
-- Enquadramento: **teto amadeirado visto de baixo**, com as réguas
-  correndo na diagonal — a foto que você mandou no chat é exatamente isso
-- Tamanho: **1600 × 1100** basta
-- JPG qualidade 78-82, abaixo de 500 KB
-
-### Como ligar
-
-1. Em `css/style.css`, na regra `.cta`, trocar o `none`:
-   ```css
-   .cta { --cta-foto: url('../img/cta.jpg'); }
-   ```
-2. Em `index.html`, tirar a classe `cta--vazia` do `<section class="cta">`
-   (é ela que mostra a madeira de CSS).
+Os outros três são anúncios com foto do dono e telefone gravado. Não
+servem pro site — o telefone da peça envelhece junto com o arquivo.
 
 ## Outras imagens pendentes
 

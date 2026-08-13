@@ -180,13 +180,15 @@ Foto nova entra em `site/img/obras/` e ganha um `<li class="obra">` no
 trilho, com `width`/`height` reais no `<img>` — são eles que reservam o
 espaço antes do arquivo chegar.
 
-### As colagens antes/depois continuam vivas
+### As colagens antes/depois saíram do site
 
-`obras2`, `obras3`, `obras4` e `obras6` saíram da seção e foram pro fim da
-galeria, sob "Antes e depois". São de qualidade bem menor que as fotos
-novas, mas mostram o que nenhuma delas mostra: o teto de antes.
+`obras1.png` … `obras6.png` continuam no repositório, mas nenhuma é
+servida: eram recortes de vídeo, e ao lado das fotos novas a diferença de
+nitidez ficava evidente. Os `.webp` delas foram apagados.
 
-Masters em `obras1.png` … `obras6.png`, fora do deploy.
+O argumento do antes/depois ainda é o mais forte que existe pra vender
+forro — quando houver um par de fotos **em qualidade** do mesmo ambiente,
+vale montar de novo.
 
 ## O que sobrou e daria uma seção nova
 

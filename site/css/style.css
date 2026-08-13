@@ -1140,8 +1140,6 @@ a { color: inherit; text-decoration: none; }
   .obra__quadro:hover .obra__img { transform: none; }
 }
 
-}
-
 /* ==========================================================================
    GALERIA — o <dialog> que abre em "Ver todas as obras"
    Cobre quase a tela toda, mas sobra margem de propósito: dá pra ver que
@@ -1156,6 +1154,11 @@ a { color: inherit; text-decoration: none; }
   max-height: none;
   padding: 0;
   margin: auto;
+  /* coluna flex, e não altura percentual no filho: o `height: 100%` do
+     corpo não resolvia contra este dialog, então ele crescia com o
+     conteúdo e não sobrava o que rolar — o painel só recortava o excesso */
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: none;
   border-radius: 18px;
@@ -1182,9 +1185,7 @@ a { color: inherit; text-decoration: none; }
 @keyframes galeria-fundo { from { opacity: 0; } }
 
 .galeria__topo {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1228,7 +1229,10 @@ a { color: inherit; text-decoration: none; }
 .galeria__fechar:hover { background: var(--dash); transform: rotate(90deg); }
 
 .galeria__corpo {
-  height: calc(100% - 1px);
+  /* min-height:0 é o que autoriza o item flex a encolher abaixo do próprio
+     conteúdo. Sem ele o overflow nunca entra em ação e nada rola. */
+  flex: 1;
+  min-height: 0;
   padding: clamp(16px, 2.4vw, 28px) clamp(18px, 2.6vw, 30px) clamp(24px, 3vw, 36px);
   overflow-y: auto;
   overscroll-behavior: contain;

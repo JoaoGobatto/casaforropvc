@@ -1154,10 +1154,6 @@ a { color: inherit; text-decoration: none; }
   max-height: none;
   padding: 0;
   margin: auto;
-  /* coluna flex, e não altura percentual no filho: o `height: 100%` do
-     corpo não resolvia contra este dialog, então ele crescia com o
-     conteúdo e não sobrava o que rolar — o painel só recortava o excesso */
-  display: flex;
   flex-direction: column;
   overflow: hidden;
   border: none;
@@ -1165,6 +1161,19 @@ a { color: inherit; text-decoration: none; }
   background: var(--white);
   box-shadow: 0 30px 90px rgba(9, 14, 30, 0.34);
 }
+
+/* o display TEM que ficar preso ao [open].
+   O navegador esconde o <dialog> fechado com `dialog:not([open])
+   { display: none }`, mas isso vem da folha DELE — e qualquer regra de
+   autor vence a folha do navegador, por menos específica que seja. Um
+   `display: flex` solto em .galeria deixava o painel plantado no meio da
+   página, sempre visível e sem botão que o fechasse, porque fechado ele
+   já estava.
+
+   Coluna flex, e não altura percentual no filho: o `height: 100%` do
+   corpo não resolvia contra este dialog, então ele crescia com o conteúdo
+   e não sobrava o que rolar. */
+.galeria[open] { display: flex; }
 
 .galeria::backdrop {
   background: rgba(9, 14, 30, 0.62);

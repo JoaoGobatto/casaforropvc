@@ -49,3 +49,22 @@ Quando você roda uma skill que precisa de script ausente, o Claude vai:
 5. Rodar a skill
 
 Você não precisa decorar nada. Roda a skill, segue o fluxo.
+
+## Site — verificações
+
+Antes de commitar mudança no `site/`:
+
+```bash
+python3 scripts/verifica-css.py      # chave sobrando no CSS
+python3 scripts/versiona-css.py      # recarimba o ?v= do <link>
+node    scripts/verifica-galeria.mjs # abre/fecha o popup das obras
+```
+
+O `verifica-galeria.mjs` precisa de `npm i -D playwright` e
+`npx playwright install chromium`. Se o Chromium estiver noutro lugar,
+passe o caminho em `CHROMIUM=`.
+
+Os dois primeiros existem por causa de bugs que passaram batido no olho:
+uma **chave órfã** derrubou uma regra CSS inteira em silêncio, e o
+navegador serviu **CSS velho com HTML novo** depois de um deploy. Nenhum
+dos dois dá erro em lugar nenhum — a página só fica errada.
